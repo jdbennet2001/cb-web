@@ -1,28 +1,72 @@
 {
-  "parser": "babel-eslint",
-  "extends": [
-    "standard",
-    "standard-react"
-  ],
-  "plugins": [
-    "babel",
-    "react",
-    "promise"
-  ],
-  "env": {
-    "browser" : true
-  },
-  "globals": {
-    "__DEV__"      : false,
-    "__TEST__"     : false,
-    "__PROD__"     : false,
-    "__COVERAGE__" : false
-  },
-  "rules": {
-    "key-spacing"          : "off",
-    "jsx-quotes"           : [2, "prefer-single"],
-    "max-len"              : [2, 120, 2],
-    "object-curly-spacing" : [2, "always"],
-    "comma-dangle"         : "off"
-  }
+"globals": {
+
+	},
+	"env": {
+		"node": true,
+		"es6": true,
+		"mocha": true
+	},
+	"rules": {
+		"accessor-pairs": 2,
+		"array-callback-return": 2,
+		"block-scoped-var": 2,
+		"class-methods-use-this": 2,
+		"curly": 2,
+		"default-case": 2,
+		"dot-location": 0,
+		"dot-notation": 2,
+		"eqeqeq": 1,
+		"guard-for-in": 2,
+		"no-alert": 2,
+		"no-caller": 2,
+		"no-case-declarations": 2,
+		"no-div-regex": 2,
+		"no-empty-pattern": 2,
+		"no-eq-null": 2,
+		"no-eval": 2,
+		"no-extend-native": 2,
+		"no-extra-bind": 2,
+		"no-extra-label": 2,
+		"no-fallthrough": 2,
+		"no-floating-decimal": 2,
+		"no-global-assign": 2,
+		"no-implicit-coercion": 2,
+		"no-implicit-globals": 2,
+		"no-implied-eval": 2,
+		"no-invalid-this": 2,
+		"no-iterator": 2,
+		"no-labels": 2,
+		"no-lone-blocks": 2,
+		"no-loop-func": 2,
+		"no-multi-str": 2,
+		"no-new": 2,
+		"no-new-func": 2,
+		"no-new-wrappers": 2,
+		"no-octal": 2,
+		"no-octal-escape": 2,
+		"no-proto": 2,
+		"no-restricted-properties": 2,
+		"no-return-assign": 2,
+		"no-return-await": 2,
+		"no-script-url": 2,
+		"no-self-assign": 2,
+		"no-self-compare": 2,
+		"no-sequences": 2,
+		"no-throw-literal": 2,
+		"no-unmodified-loop-condition": 2,
+		"no-unused-expressions": 2,
+		"no-unused-labels": 2,
+		"no-useless-call": 2,
+		"no-useless-escape": 2,
+		"no-useless-return": 2,
+		"no-undef" : 2,
+		"no-void": 2,
+		"no-warning-comments": 2,
+		"no-with": 2,
+		"radix": 2,
+		"require-await": 2,
+		"wrap-iife": 2,
+		"yoda": 2
+	}
 }
