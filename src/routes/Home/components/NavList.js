@@ -1,8 +1,11 @@
 /* eslint-disable flowtype/require-valid-file-annotation */
 
-import React from 'react';
-import PropTypes from 'prop-types';
+import React      from 'react';
+import PropTypes  from 'prop-types';
+import {connect}  from 'react-redux'
 import './NavList.scss';
+
+import Folder     from './Folder';
 
 const styles = theme => ({
   root: {
@@ -24,16 +27,30 @@ class NavList extends React.Component {
     this.setState({ open: !this.state.open });
   };
 
+
+
   render() {
-    const { classes } = this.props;
+
+
+    let folders = this.props.folders || [];
+    let lists_items = folders.map(folder =>{
+        return <Folder name={folder.name} folders={folder.folders} ></Folder>
+    });
+
     return (
-      <div onClick={this.handleClick} >Hello World</div>
+      <div>
+        {lists_items}
+      </div>
     );
   }
 }
 
+function mapStateToProps(state) {
+  debugger;
+  return { folders: state.folders }
+}
+
+export default connect(mapStateToProps)(NavList)
 // NavList.propTypes = {
 //   classes: PropTypes.object.isRequired,
 // };
-
-export default (NavList);
