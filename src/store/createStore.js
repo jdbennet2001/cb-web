@@ -4,7 +4,7 @@ import { browserHistory } from 'react-router'
 import makeRootReducer from './reducers'
 import { updateLocation } from './location'
 
-const createStore = (initialState = {}) => {
+const createStore = (initialState = {'folders': [{'name': 'one a','children': [{'name': 'two a'}]},{'name': 'one b'}]}) => {
   // ======================================================
   // Middleware Configuration
   // ======================================================
