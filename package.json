@@ -27,6 +27,8 @@
     "express": "^4.14.0",
     "fs": "0.0.1-security",
     "lodash": "^4.17.4",
+    "material-ui": "^1.0.0-beta.17",
+    "material-ui-icons": "^1.0.0-beta.17",
     "nconf": "^0.8.5",
     "node-unrar-js": "^0.8.1",
     "object-assign": "^4.1.1",
