@@ -10,8 +10,8 @@ const path_to_library = path.join(__dirname, '../archives/')
 
 describe('Can walk library structure', function() {
 
-    it('Should return all files and folders.', function() {
-      return index(path_to_library).then(library => {
+    it('Should return all files and folders.', function(done) {
+      index(path_to_library).then(library => {
         assert.property(library, 'files');
         assert.property(library, 'folders');
       })

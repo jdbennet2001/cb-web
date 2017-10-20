@@ -35,6 +35,24 @@ if (project.env === 'development') {
   // when the application is compiled.
   app.use(express.static(path.resolve(project.basePath, 'public')))
 
+// let { cover, index, libraries } = require("./lib/library");
+let {cover} = require('./lib/archive');
+
+app.get("/sample", function(req, res) {
+  debugger;
+  let archive = "/Users/jonbennett/projects/react/cb-web/tests/archives/comics/marvel/spidey.cbr";
+  // let archive = "/Users/jonbennett/projects/react/cb-web/tests/archives/other/running.cbz";
+  let data = cover(archive);
+    res.contentType("image/jpeg");
+    res.end(data, "binary");
+
+
+      // res.sendFile(process.cwd() + "/public/icons/balloon.png");
+
+
+});
+
+
   // This rewrites all routes requests to the root /index.html file
   // (ignoring file requests). If you want to implement universal
   // rendering, you'll want to remove this middleware.
