@@ -7,7 +7,7 @@ const _       = require('lodash');
 
 // Read the archive file into a typedArray
 
-const path_to_file = path.join(__dirname, '../archives/spidey.cbr')
+const path_to_file = path.join(__dirname, '../archives/comics/marvel/spidey.cbr')
 
 describe('Can extract CBR file', function() {
     it('Should return the first page of the archive', function() {
@@ -24,7 +24,6 @@ describe('Can extract CBR file', function() {
       let cover = _.head(files);
       let result = extractor.extractFiles([cover.name]);
       let image = path.join(__dirname, '../', cover.name);
-      debugger;
       let file_exists = fs.existsSync(image);
       assert.isTrue(file_exists, `File should exist at ${image}`);
       fs.unlinkSync(image);

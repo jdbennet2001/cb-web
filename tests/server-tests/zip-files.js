@@ -7,10 +7,9 @@ const S       = require('String');
 
 // Read the archive file into a typedArray
 
-const path_to_file = path.join(__dirname, '../archives/running.cbz')
+const path_to_file = path.join(__dirname, '../archives/other/running.cbz')
 
 describe('Can extract CBZ file', function() {
-  debugger;
     it('Should return the first page of the archive', function() {
 
       var zip = new admZip(path_to_file);
@@ -18,8 +17,5 @@ describe('Can extract CBZ file', function() {
       zip_entries = _.filter(zip_entries, zip_entry => {
         return !S(zip_entry.entryName).startsWith('__')
       })
-
-      debugger;
-
     });
 });
