@@ -4,7 +4,7 @@ import { browserHistory } from 'react-router'
 import makeRootReducer from './reducers'
 import { updateLocation } from './location'
 
-const createStore = (initialState = {"folders": [{"name": "one a","folders": [{"name": "two a"}]},{"name": "one b"}]}) => {
+const createStore = (initialState = {}) => {
   // ======================================================
   // Middleware Configuration
   // ======================================================
@@ -27,11 +27,7 @@ const createStore = (initialState = {"folders": [{"name": "one a","folders": [{"
   // ======================================================
   const store = createReduxStore(
     makeRootReducer(),
-    initialState,
-    composeEnhancers(
-      applyMiddleware(...middleware),
-      ...enhancers
-    )
+    initialState
   )
   store.asyncReducers = {}
 

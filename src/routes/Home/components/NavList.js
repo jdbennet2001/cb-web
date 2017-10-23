@@ -20,14 +20,6 @@ const styles = theme => ({
 
 class NavList extends React.Component {
 
-  state = { open: true };
-
-  handleClick = () => {
-    debugger;
-    this.setState({ open: !this.state.open });
-  };
-
-
 
   render() {
 
@@ -37,6 +29,7 @@ class NavList extends React.Component {
         return <Folder name={folder.name} folders={folder.folders} ></Folder>
     });
 
+    debugger;
     return (
       <div>
         {lists_items}
@@ -46,11 +39,17 @@ class NavList extends React.Component {
 }
 
 function mapStateToProps(state) {
-  debugger;
-  return { folders: state.folders }
+  return { folders: state.catalog.folders }
 }
 
-export default connect(mapStateToProps)(NavList)
-// NavList.propTypes = {
-//   classes: PropTypes.object.isRequired,
-// };
+function mapDispatchToProps(dispatch) {
+  return {
+    selectFolder: () =>
+      dispatch({
+        type: "selectFolder"
+      })
+  };
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavList)

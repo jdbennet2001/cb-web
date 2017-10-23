@@ -7,7 +7,6 @@ class Folder extends React.Component {
   state = { open: false };
 
   handleClick = () => {
-    debugger;
     this.setState({ open: !this.state.open });
   };
 
@@ -21,10 +20,15 @@ class Folder extends React.Component {
     }
   };
 
+  // let action = {
+  //   type: 'SELECT_FOLDER',
+  //   text: this.props.name
+  // }
+
   render(){
 
     let children = this.get_children(this.props.folders);
-
+    debugger;
     return(
     <div onClick={this.handleClick} className='folder'>{this.props.name}
       {children}

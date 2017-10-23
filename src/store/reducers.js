@@ -1,18 +1,26 @@
 import { combineReducers } from 'redux'
 import locationReducer from './location'
 
+
 export const makeRootReducer = (asyncReducers) => {
   return combineReducers({
-    // location: locationReducer,
-    ...asyncReducers
+    folder: loadFolder,
+    catalog: loadCatalog
   })
 }
 
-export const injectReducer = (store, { key, reducer }) => {
-  if (Object.hasOwnProperty.call(store.asyncReducers, key)) return
+/*
+ Update selected folder
+ */
+function loadFolder(state = {files:[]}, action){
+  return state;
+}
 
-  store.asyncReducers[key] = reducer
-  store.replaceReducer(makeRootReducer(store.asyncReducers))
+/*
+ Update selected catalog
+ */
+function loadCatalog(state = {folders:[]}, action){
+  return state;
 }
 
 export default makeRootReducer
