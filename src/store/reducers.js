@@ -12,7 +12,8 @@ export const makeRootReducer = (asyncReducers) => {
 /*
  Update selected folder
  */
-function loadFolder(state = {files:[]}, action){
+function loadFolder(state = [], action){
+  debugger;
   if ( action.type === 'FOLDER'){
     debugger;
     return action.files;

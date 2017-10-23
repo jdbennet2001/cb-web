@@ -1,5 +1,6 @@
 import React      from 'react';
 import {connect}  from 'react-redux'
+var appendQuery = require('append-query')
 
 import './Folder.scss';
 
@@ -9,8 +10,9 @@ class Folder extends React.Component {
 
   handleClick = (e) => {
     debugger;
+    this.props.loadFolder(this.props.directory);
+
     this.setState({ open: !this.state.open });
-    this.props.loadFolder(this.props.name);
     e.stopPropagation();
   };
 
@@ -19,7 +21,7 @@ class Folder extends React.Component {
       return <div></div>;
     }else{
       return folders.map(folder =>{
-        return <Folder key={folder.directory} name={folder.name} folders={folder.folders}></Folder>;
+        return <Folder key={folder.directory} loadFolder={this.props.loadFolder} directory={folder.directory} name={folder.name} folders={folder.folders}></Folder>;
       })
     }
   };
@@ -37,14 +39,16 @@ class Folder extends React.Component {
 
 }
 
-function fetchFolder(forPerson) {
+function fetchFolder(directory) {
+  const uri = appendQuery('/files', {directory});
   return function(dispatch) {
-    return fetch("/model")
+    return fetch(uri)
       .then(response => {
         return response.json();
       })
-      .then(model => {
-        return dispatch({ type: "FOLDER", files: model.files });
+      .then(files => {
+        debugger;
+        return dispatch({ type: "FOLDER", files: files });
       });
   };
 }
@@ -55,8 +59,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    loadFolder: () =>
-      dispatch(fetchFolder('default'))
+    loadFolder: (directory) =>
+      dispatch(fetchFolder(directory))
   };
 }
 

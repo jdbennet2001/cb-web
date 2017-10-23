@@ -30,7 +30,7 @@ class NavList extends React.Component {
 
     let folders = this.props.folders || [];
     let lists_items = folders.map(folder =>{
-        return <Folder name={folder.name} key={folder.directory} folders={folder.folders} ></Folder>
+        return <Folder name={folder.name} directory={folder.directory} key={folder.directory} folders={folder.folders} ></Folder>
     });
 
     return (

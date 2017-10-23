@@ -22,6 +22,7 @@
   "license": "MIT",
   "dependencies": {
     "adm-zip": "^0.4.7",
+    "append-query": "^2.0.1",
     "bootstrap": "^4.0.0-alpha",
     "compression": "^1.6.2",
     "es6-promisify": "^5.0.0",

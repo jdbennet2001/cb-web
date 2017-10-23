@@ -18,21 +18,7 @@ class App extends React.Component {
     //this.fetchData();
   }
 
-  fetchData() {
-    debugger;
-    let self = this;
-
-    fetch('/model')
-        .then((response) => {
-            return response.json();
-        }).then(model => {
-          debugger;
-          let state =  {catalog: {folders: []}, folder: {files: []}};
-          state.catalog.folders = model.folders;
-          state.folder.files = model.files;
-          this.setState(state);
-        }).catch(err =>  {console.log(`Model load error: ${err.message}`)});
-  }
+  
 
   render () {
     return (
