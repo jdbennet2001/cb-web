@@ -1,0 +1,29 @@
+{
+    "folders": {
+        "name": "archives",
+        "directory": "/Users/jonbennett/projects/react/cb-web/tests/archives/",
+        "folders": [
+            {
+                "name": "comics",
+                "directory": "/Users/jonbennett/projects/react/cb-web/tests/archives/comics",
+                "folders": [
+                    {
+                        "name": "marvel",
+                        "directory": "/Users/jonbennett/projects/react/cb-web/tests/archives/comics/marvel",
+                        "folders": []
+                    }
+                ]
+            },
+            {
+                "name": "other",
+                "directory": "/Users/jonbennett/projects/react/cb-web/tests/archives/other",
+                "folders": []
+            }
+        ]
+    },
+    "files": [
+        "/Users/jonbennett/projects/react/cb-web/tests/archives/comics/marvel/spidey.cbr",
+        "/Users/jonbennett/projects/react/cb-web/tests/archives/other/Gun-Jou-1.zip",
+        "/Users/jonbennett/projects/react/cb-web/tests/archives/other/running.cbz"
+    ]
+}
