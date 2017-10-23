@@ -13,6 +13,10 @@ export const makeRootReducer = (asyncReducers) => {
  Update selected folder
  */
 function loadFolder(state = {files:[]}, action){
+  if ( action.type === 'FOLDER'){
+    debugger;
+    return action.files;
+  }
   return state;
 }
 

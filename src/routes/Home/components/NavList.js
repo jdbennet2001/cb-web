@@ -55,7 +55,6 @@ function fetchCatalog(forPerson) {
 
 
 function mapStateToProps(state) {
-  debugger;
   return { folders: state.catalog.folders }
 }
 
