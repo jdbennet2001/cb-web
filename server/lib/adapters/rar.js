@@ -19,7 +19,6 @@ function rar(filename){
 
   this.cover = function(){
     let page = _.head(files);
-    debugger;
     let result = extractor.extractFiles([page.name]);
     let image = path.join(process.cwd(), page.name);
     let data = fs.readFileSync(image);

@@ -4,13 +4,15 @@ const S         = require('string');
 const PouchDB   = require('pouchdb');
 const nconf     = require('nconf');
 const _         = require('lodash');
-const promisify = require("es6-promisify");
 const fs 				= require("fs");
 const jsonfile	= require('jsonfile');
 
+const db    = new PouchDB('covers');
 
-const covers    = new PouchDB('covers');
-const read_dir = promisify(fs.readDir);
+//Update internal index during testing...
+let path_to_library = path.join(__dirname, '../../tests/archives')
+let archives = index_files(path_to_library);
+let covers = index_covers(archives);
 
 const {cover}   = require('./archive');
 
@@ -27,7 +29,9 @@ module.exports.model = function(){
 }
 
 module.exports.cover = function(){
-
+	return db.allDocs().then( docs => {
+		return db.getAttachment('spidey.cbr', 'cover.jpg')
+	});
 }
 
 module.exports.index = function(directory){
@@ -35,10 +39,11 @@ module.exports.index = function(directory){
 		let folders = index_folders(directory);
 		let files   = index_files(directory);
 
+
 		const path_to_model = path.join(__dirname, '../data/model.json');
 		jsonfile.writeFileSync(path_to_model, {folders, files}, {spaces: 4} );
 
-		return {folders, files}
+		return index_covers( files );
 
 }
 
@@ -76,6 +81,46 @@ function index_files(directory){
 
 	return files;
 }
+
+
+
+/*
+ Walk the directory structure, adding all covers to the database
+ */
+function index_covers( files ){
+
+	//Get all covers currently in database
+	return db.allDocs().then(doc =>{
+
+		let covers = doc.rows.map(row => row.id);
+
+		let queued  = files.filter(file => {
+			return !_.includes(covers, path.basename(file) );
+		})
+
+		debugger;
+
+		//Add new issues, one at a time
+		return _.reduce(queued, function(p, file){
+			return index_cover(file);
+		}, Promise.resolve() )
+
+	})
+}
+
+/*
+ Extract the cover from a given archive and file it in pouchdb
+ */
+ function index_cover(file){
+	 let image 	= cover(file);
+	 let key 		= path.basename(file);
+	 return db.putAttachment(key, 'cover.jpg', image, 'test/jpg').then(result=>{
+		 console.log(`Added cover ${key} to database`);
+	 }, err => {
+		 console.error(`Error adding cover ${key} to database, ${err.message}`);
+		 return Promise.resolve(err);
+	 })
+ }
 
 /*
  Return fully qualified paths for all  useful files in a directory

@@ -12,7 +12,6 @@ function zip(filename){
   })
 
 this.cover = function(){
-  debugger;
   let zip_entry = _.head(zip_entries);
   return zip_entry.getData();
 }

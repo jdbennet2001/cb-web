@@ -56,19 +56,18 @@ app.get('/files', function(req, res){
 
 
 // let { cover, index, libraries } = require("./lib/library");
-let {cover} = require('./lib/archive');
+let {cover} = require('./lib/library');
 
-app.get("/sample", function(req, res) {
+app.get("/cover", function(req, res) {
   debugger;
-  let archive = "/Users/jonbennett/projects/react/cb-web/tests/archives/comics/marvel/spidey.cbr";
-  // let archive = "/Users/jonbennett/projects/react/cb-web/tests/archives/other/running.cbz";
-  let data = cover(archive);
-    res.contentType("image/jpeg");
-    res.end(data, "binary");
 
-
-      // res.sendFile(process.cwd() + "/public/icons/balloon.png");
-
+  cover().then(data => {
+    res.contentType('image/jpeg');
+     res.end(data, 'binary');
+  }, err => {
+    const path_to_balloon = process.cwd() + '/public/icons/balloon.png'
+    res.sendFile(path_to_balloon);
+  })
 
 });
 
