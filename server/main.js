@@ -1,10 +1,11 @@
-const express = require('express')
-const path = require('path')
-const webpack = require('webpack')
-const logger = require('../build/lib/logger')
+const express       = require('express')
+const path          = require('path')
+const webpack       = require('webpack')
+const logger        = require('../build/lib/logger')
 const webpackConfig = require('../build/webpack.config')
-const project = require('../project.config')
-const compress = require('compression')
+const project       = require('../project.config')
+const compress      = require('compression')
+const jsonfile      = require('jsonfile');
 
 const app = express()
 app.use(compress())
@@ -34,6 +35,14 @@ if (project.env === 'development') {
   // of development since this directory will be copied into ~/dist
   // when the application is compiled.
   app.use(express.static(path.resolve(project.basePath, 'public')))
+
+app.get('/model', function(req, res){
+  debugger;
+    const path_to_file = path.join(__dirname, './data/model.json');
+    jsonfile.readFile(path_to_file, function(err, obj) {
+        res.json(obj);
+    })
+});
 
 // let { cover, index, libraries } = require("./lib/library");
 let {cover} = require('./lib/archive');

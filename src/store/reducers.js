@@ -20,7 +20,11 @@ function loadFolder(state = {files:[]}, action){
  Update selected catalog
  */
 function loadCatalog(state = {folders:[]}, action){
-  return state;
+  if ( action.type === 'CATALOG'){
+    return action.folders;
+  }else{
+    return state;
+  }
 }
 
 export default makeRootReducer

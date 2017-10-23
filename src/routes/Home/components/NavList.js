@@ -20,16 +20,19 @@ const styles = theme => ({
 
 class NavList extends React.Component {
 
+  componentDidMount(){
+    this.props.loadCatalog();
+  }
+
 
   render() {
 
 
     let folders = this.props.folders || [];
     let lists_items = folders.map(folder =>{
-        return <Folder name={folder.name} folders={folder.folders} ></Folder>
+        return <Folder name={folder.name} key={folder.directory} folders={folder.folders} ></Folder>
     });
 
-    debugger;
     return (
       <div>
         {lists_items}
@@ -38,16 +41,28 @@ class NavList extends React.Component {
   }
 }
 
+function fetchCatalog(forPerson) {
+  return function(dispatch) {
+    return fetch("/model")
+      .then(response => {
+        return response.json();
+      })
+      .then(model => {
+        return dispatch({ type: "CATALOG", folders: model.folders });
+      });
+  };
+}
+
+
 function mapStateToProps(state) {
+  debugger;
   return { folders: state.catalog.folders }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    selectFolder: () =>
-      dispatch({
-        type: "selectFolder"
-      })
+    loadCatalog: () =>
+      dispatch(fetchCatalog('default'))
   };
 }
 

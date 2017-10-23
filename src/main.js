@@ -5,7 +5,8 @@ import './styles/main.scss'
 
 // Store Initialization
 // ------------------------------------
-const store = createStore(window.__INITIAL_STATE__)
+let initialState = {catalog: {folders: []}, folder: {files: []}}
+const store = createStore(initialState)
 
 // Render Setup
 // ------------------------------------

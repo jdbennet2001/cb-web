@@ -15,15 +15,11 @@ class Folder extends React.Component {
       return <div></div>;
     }else{
       return folders.map(folder =>{
-        return <Folder name={folder.name} folders={folder.folders}></Folder>;
+        return <Folder key={folder.directory} name={folder.name} folders={folder.folders}></Folder>;
       })
     }
   };
 
-  // let action = {
-  //   type: 'SELECT_FOLDER',
-  //   text: this.props.name
-  // }
 
   render(){
 
