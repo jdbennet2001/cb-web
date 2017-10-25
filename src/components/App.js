@@ -8,7 +8,6 @@ import Reader from './reader/Reader'
 class App extends React.Component {
   static propTypes = {
     store: PropTypes.object.isRequired,
-    routes: PropTypes.object.isRequired,
   }
 
   shouldComponentUpdate () {
@@ -25,7 +24,7 @@ class App extends React.Component {
     return (
       <Provider store={this.props.store}>
         <div style={{ height: '100%' }}>
-        
+
           <Router history={browserHistory}>
               <Route path='/' component={HomeView}></Route>
               <Route path='/reader' component={Reader}></Route>
