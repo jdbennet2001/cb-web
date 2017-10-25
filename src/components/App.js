@@ -1,8 +1,9 @@
 import React from 'react'
-import { browserHistory, Router } from 'react-router'
+import { browserHistory, Router, Route } from 'react-router'
 import { Provider } from 'react-redux'
 import PropTypes from 'prop-types'
-import HomeView from '../routes/Home/components/HomeView'
+import HomeView from './browser/HomeView'
+import Reader from './reader/Reader'
 
 class App extends React.Component {
   static propTypes = {
@@ -18,13 +19,18 @@ class App extends React.Component {
     //this.fetchData();
   }
 
-  
+
 
   render () {
     return (
       <Provider store={this.props.store}>
         <div style={{ height: '100%' }}>
-          <HomeView />
+        
+          <Router history={browserHistory}>
+              <Route path='/' component={HomeView}></Route>
+              <Route path='/reader' component={Reader}></Route>
+          </Router>
+
         </div>
       </Provider>
     )
