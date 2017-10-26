@@ -7,33 +7,78 @@ import './Reader.scss'
 
 class Reader extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {pages: ['bone.jpg', 'bone_02.jpg', 'bone_03.jpg']}
+constructor(props) {
+  super(props);
+  this.state = {
+    pages: [ "bone.jpg", "bone_02.jpg","bone_03.jpg" ]
+  };
+
+  this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+}
+
+componentDidMount() {
+  this.updateWindowDimensions();
+  window.addEventListener('resize', this.updateWindowDimensions);
+}
+
+componentWillUnmount() {
+  window.removeEventListener('resize', this.updateWindowDimensions);
+}
+
+updateWindowDimensions() {
+  let state = this.state;
+      state = Object.assign(state, { width: window.innerWidth, height: window.innerHeight });
+  this.setState(state);
+}
+
+
+
+  handleClick(index){
+    let pages =  this.state.pages;
+    this.slide( pages, index, 'left');
   }
 
-  shouldComponentUpdate () {
-    return false
+  slide(pages, index, direction){
+
+    let page = pages[index];
+
+    this.timer(100, 25, count =>{
+      let location = (direction === 'left') ? count * -1 : count;
+      pages[index] = Object.assign(page, {location});
+      this.setState(pages);
+    });
+
   }
 
-  componentDidMount(){
-    //this.fetchData();
-  }
+  timer(count, delay, callback){
+      let i = 0;
 
-  handleClick(e){
-    debugger;
-    alert('click!');
+      let timer = setInterval(() =>{
+        i++;
+        if (i === count){
+          clearInterval(timer)
+        }else{
+          callback(i);
+        }
+      }, delay);
   }
 
   render () {
 
     let pages = this.state.pages.map( (page, index) =>{
-        return <div className='page' onClick={() =>this.handleClick({index})} key={page}><img src={'/icons/' +page} /></div>
+      debugger;
+        const style = {
+          width: this.state.width
+        };
+
+        return <div className='page' style={style} key={page.image}><img src={'/icons/' +page} /></div>
     })
 
     return (
       <div className='viewport'>
-        {pages}
+        <div className='filmstrip'>
+          {pages}
+        </div>
       </div>
     )
   }

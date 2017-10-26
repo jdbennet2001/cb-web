@@ -1,19 +1,27 @@
 .viewport{
   height: 100%;
   width: 100%;
+  border: 2px solid blue;
 }
 
-.page{
+.filmstrip{
+   display: flex;
+   flex-direction: row;
+   flex-wrap: nowrap;
+   justify-content: flex-start;
+   align-content: stretch;
+   align-items: stretch;
   height: 100%;
 }
 
-.page .centered{
+.page{
+    flex: 0 1 auto;
+    align-self: auto;
+    width: 400px;
+    height: 100%;
+  }
 
-}
 
-.page .left{
-  
-}
 
 .page img{
   height: 100%;
