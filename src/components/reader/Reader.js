@@ -10,7 +10,8 @@ class Reader extends React.Component {
 constructor(props) {
   super(props);
   this.state = {
-    pages: [ "bone.jpg", "bone_02.jpg","bone_03.jpg" ]
+    pages: [ "bone.jpg", "bone_02.jpg","bone_03.jpg" ],
+    offset: 0
   };
 
   this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
@@ -35,48 +36,43 @@ updateWindowDimensions() {
 
   handleClick(index){
     let pages =  this.state.pages;
-    this.slide( pages, index, 'left');
+    let state = this.state;
+    let from = state.offset;
+    let to =  Math.max(state.offset - state.width, -1 *( state.pages.length -1) * state.width);
+    this.slide(from, to);
   }
 
-  slide(pages, index, direction){
+  slide(from, to){
 
-    let page = pages[index];
+    let delta = (to - from) / 100;
+    let counter = 0;
 
-    this.timer(100, 25, count =>{
-      let location = (direction === 'left') ? count * -1 : count;
-      pages[index] = Object.assign(page, {location});
-      this.setState(pages);
-    });
+    let timer = setInterval( () => {
 
-  }
+      let state = this.state;
+      state.offset += delta;
+      this.setState(state);
 
-  timer(count, delay, callback){
-      let i = 0;
+      if ( ++ counter  == 100){
+        clearInterval(timer);
+      }
 
-      let timer = setInterval(() =>{
-        i++;
-        if (i === count){
-          clearInterval(timer)
-        }else{
-          callback(i);
-        }
-      }, delay);
+    }, 10)
+
   }
 
   render () {
 
     let pages = this.state.pages.map( (page, index) =>{
-      debugger;
-        const style = {
-          width: this.state.width
-        };
-
+        const style = { width: this.state.width };
         return <div className='page' style={style} key={page.image}><img src={'/icons/' +page} /></div>
     })
 
+    let filmstrip_style = {left: this.state.offset, position:"absolute"}
+
     return (
-      <div className='viewport'>
-        <div className='filmstrip'>
+      <div className='viewport' onClick={() => {this.handleClick()}}>
+        <div className='filmstrip' style={filmstrip_style}>
           {pages}
         </div>
       </div>
