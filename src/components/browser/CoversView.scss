@@ -1,0 +1,30 @@
+.covers-area {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-content: space-between;
+    align-items: flex-start;
+}
+
+.tile {
+  width: 150px;
+  height: 225px;
+  margin: 10px;
+  flex: 0 0 auto;
+  align-self: auto;
+  border: 1px solid blue;
+}
+
+.tile .cover{
+  max-width: 125px;
+  max-height: 175px;
+  display:block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5px;
+}
+
+.tile .title{
+  text-align: center;
+}

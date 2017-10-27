@@ -58,10 +58,10 @@ if (project.env === 'development') {
 
 
 
-app.get("/cover", function(req, res) {
+app.get("/cover/:name", function(req, res) {
   debugger;
 
-  cover().then(data => {
+  cover(req.params.name).then(data => {
     res.contentType('image/jpeg');
      res.end(data, 'binary');
   }, err => {

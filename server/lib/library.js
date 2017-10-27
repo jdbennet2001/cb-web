@@ -31,9 +31,9 @@ module.exports.model = function(){
 	return model;
 }
 
-module.exports.cover = function(){
+module.exports.cover = function(name){
 	return db.allDocs().then( docs => {
-		return db.getAttachment('spidey.cbr', 'cover.jpg')
+		return db.getAttachment(name, 'cover.jpg')
 	});
 }
 

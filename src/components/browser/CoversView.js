@@ -19,9 +19,12 @@ class CoversView extends React.Component {
     debugger;
 
     return (
-      <div>
+      <div className='covers-area'>
         {this.props.files.map(file =>{
-          return <div>{file.name}</div>;
+          return <div className='tile'>
+            <img className='cover' src={'/cover/' +file.name}></img>
+            <div className='title'>{file.name}</div>
+          </div>;
         })}
       </div>
     );
