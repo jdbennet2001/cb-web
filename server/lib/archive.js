@@ -10,7 +10,8 @@ module.exports.cover = function(archive){
 }
 
 module.exports.pages = function(archive){
-
+  let adapter = get_adapter(archive);
+  return adapter.pages();
 }
 
 module.exports.page = function(archive, index){

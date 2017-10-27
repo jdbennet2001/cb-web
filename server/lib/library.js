@@ -14,18 +14,21 @@ let path_to_library = path.join(__dirname, '../../tests/archives')
 let archives = index_files(path_to_library);
 let covers = index_covers(archives);
 
-const {cover}   = require('./archive');
+const {cover, pages, page}   = require('./archive');
 
 const path_to_conf = path.join(__dirname, '../../config/app.json');
 nconf.argv()
 	 .env()
 	 .file(path_to_conf);
 
+let path_to_model = path.join(__dirname, '../data/model.json');
+let model = jsonfile.readFileSync(path_to_model);
+
 /*
  Return a list of all libraries on the system
  */
 module.exports.model = function(){
-
+	return model;
 }
 
 module.exports.cover = function(){
@@ -38,10 +41,12 @@ module.exports.index = function(directory){
 
 		let folders = index_folders(directory);
 		let files   = index_files(directory);
+		let archives = files.map(file =>  index_file(file));
+
+		model = {folders, archives};
 
 
-		const path_to_model = path.join(__dirname, '../data/model.json');
-		jsonfile.writeFileSync(path_to_model, {folders, files}, {spaces: 4} );
+		jsonfile.writeFileSync(path_to_model, {folders, archives}, {spaces: 4} );
 
 		return index_covers( files );
 
@@ -82,10 +87,19 @@ function index_files(directory){
 	return files;
 }
 
-
+/*
+ Return information about a given file on the system.
+ */
+function index_file(file){
+	let length = pages(file);
+	let name 	 = path.basename(file);
+	let location = file;
+	let directory = path.dirname(file);
+	return {length, name ,location, directory};
+}
 
 /*
- Walk the directory structure, adding all covers to the database
+ Find all new archives, from a list of files, and add their covers to the database
  */
 function index_covers( files ){
 

@@ -36,27 +36,27 @@ if (project.env === 'development') {
   // when the application is compiled.
   app.use(express.static(path.resolve(project.basePath, 'public')))
 
-app.get('/model', function(req, res){
-    const path_to_file = path.join(__dirname, './data/model.json');
-    jsonfile.readFile(path_to_file, function(err, obj) {
-        res.json(obj);
+  let {cover, model} = require('./lib/library');
+
+  app.get('/model', function(req, res){
+    res.json( model() );
+  });
+
+  /*
+   Return the files in a given directory
+   */
+  app.get('/files', function(req, res){
+
+    let archives = model().archives;
+    debugger;
+    let files = archives.filter(archive => {
+      return (archive.directory === req.query.directory)
     })
-});
 
-app.get('/files', function(req, res){
-  debugger;
-    const path_to_file = path.join(__dirname, './data/model.json');
-    jsonfile.readFile(path_to_file, function(err, obj) {
-        let files = obj.files.filter(file => {
-          return (path.dirname(file) === req.query.directory)
-        })
-        res.json(files);
-    })
-});
+    res.json(files);
+  });
 
 
-// let { cover, index, libraries } = require("./lib/library");
-let {cover} = require('./lib/library');
 
 app.get("/cover", function(req, res) {
   debugger;

@@ -21,10 +21,30 @@
             }
         ]
     },
-    "files": [
-        "/Users/jonbennett/projects/react/cb-web/tests/archives/comics/marvel/spidey.cbr",
-        "/Users/jonbennett/projects/react/cb-web/tests/archives/other/Gun-Jou-1.zip",
-        "/Users/jonbennett/projects/react/cb-web/tests/archives/other/Gun-Jou-2.zip",
-        "/Users/jonbennett/projects/react/cb-web/tests/archives/other/running.cbz"
+    "archives": [
+        {
+            "length": 22,
+            "name": "spidey.cbr",
+            "location": "/Users/jonbennett/projects/react/cb-web/tests/archives/comics/marvel/spidey.cbr",
+            "directory": "/Users/jonbennett/projects/react/cb-web/tests/archives/comics/marvel"
+        },
+        {
+            "length": 52,
+            "name": "Gun-Jou-1.zip",
+            "location": "/Users/jonbennett/projects/react/cb-web/tests/archives/other/Gun-Jou-1.zip",
+            "directory": "/Users/jonbennett/projects/react/cb-web/tests/archives/other"
+        },
+        {
+            "length": 37,
+            "name": "Gun-Jou-2.zip",
+            "location": "/Users/jonbennett/projects/react/cb-web/tests/archives/other/Gun-Jou-2.zip",
+            "directory": "/Users/jonbennett/projects/react/cb-web/tests/archives/other"
+        },
+        {
+            "length": 3,
+            "name": "running.cbz",
+            "location": "/Users/jonbennett/projects/react/cb-web/tests/archives/other/running.cbz",
+            "directory": "/Users/jonbennett/projects/react/cb-web/tests/archives/other"
+        }
     ]
 }

@@ -21,7 +21,7 @@ class CoversView extends React.Component {
     return (
       <div>
         {this.props.files.map(file =>{
-          return<div>{file}</div>;
+          return <div>{file.name}</div>;
         })}
       </div>
     );
