@@ -15,15 +15,14 @@
 }
 
 .page{
-    flex: 0 0 auto;
-    align-self: auto;
-    width: 400px;
+    display: block;
+    
     height: 100%;
   }
 
 
 
-.page img{
+.reader img{
   height: 100%;
   width: auto;
   margin-left: auto;
