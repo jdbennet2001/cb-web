@@ -6,7 +6,7 @@ const S       = require('String');
 function zip(filename){
 
   var zip = new admZip(filename);
-  var zip_entries = zip.getEntries();
+  var zip_entries  = zip.getEntries();
   zip_entries = _.filter(zip_entries, zip_entry => {
     return !S(zip_entry.entryName).startsWith('__')
   })
@@ -21,7 +21,8 @@ this.pages = function(){
 }
 
 this.page = function(index){
-
+	let zip_entry = zip_entries[index];
+	return zip_entry.getData();
 }
 
 }

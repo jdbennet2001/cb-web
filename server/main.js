@@ -37,6 +37,7 @@ if (project.env === 'development') {
   app.use(express.static(path.resolve(project.basePath, 'public')))
 
   let {cover, model} = require('./lib/library');
+  let {page} = require('./lib/archive');
 
   app.get('/model', function(req, res){
     res.json( model() );
@@ -48,7 +49,6 @@ if (project.env === 'development') {
   app.get('/files', function(req, res){
 
     let archives = model().archives;
-    debugger;
     let files = archives.filter(archive => {
       return (archive.directory === req.query.directory)
     })
@@ -57,19 +57,37 @@ if (project.env === 'development') {
   });
 
 
+  /*
+   Return the cover for a given issue. 
+   @input the issue name (No path, example 'Spider-Man 01.cbr')
+   */
+  app.get("/cover/:name", function(req, res) {
 
-app.get("/cover/:name", function(req, res) {
-  debugger;
+    cover(req.params.name).then(data => {
+      res.contentType('image/jpeg');
+       res.end(data, 'binary');
+    }, err => {
+      const path_to_balloon = process.cwd() + '/public/icons/balloon.png'
+      res.sendFile(path_to_balloon);
+    })
 
-  cover(req.params.name).then(data => {
-    res.contentType('image/jpeg');
-     res.end(data, 'binary');
-  }, err => {
-    const path_to_balloon = process.cwd() + '/public/icons/balloon.png'
-    res.sendFile(path_to_balloon);
-  })
+  });
 
-});
+ /*
+   Return the cover for a given issue. 
+   @input the issue name (No path, example 'Spider-Man 01.cbr')
+   */
+  app.get("/page", function(req, res) {
+    try{
+      let data = page(req.query.archive, req.query.number);
+          res.contentType('image/jpeg');
+          res.end(data, 'binary');
+    } catch(err) {
+      const path_to_balloon = process.cwd() + '/public/icons/balloon.png'
+      res.sendFile(path_to_balloon);
+    }
+
+  });
 
 
   // This rewrites all routes requests to the root /index.html file

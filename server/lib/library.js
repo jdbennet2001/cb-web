@@ -37,6 +37,7 @@ module.exports.cover = function(name){
 	});
 }
 
+
 module.exports.index = function(directory){
 
 		let folders = index_folders(directory);

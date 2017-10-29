@@ -15,7 +15,8 @@ module.exports.pages = function(archive){
 }
 
 module.exports.page = function(archive, index){
-
+   let adapter = get_adapter(archive);
+  return adapter.page(index); 
 }
 
 function get_adapter(archive){

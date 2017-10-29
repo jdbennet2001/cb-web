@@ -13,7 +13,7 @@ function rar(filename){
 
   var list_entries = _.last(list).fileHeaders;
 
-  var files = _.filter(list_entries, entry => {
+  var files = this.files = _.filter(list_entries, entry => {
     return entry.packSize > 0;
   })
 
@@ -31,7 +31,12 @@ function rar(filename){
   }
 
   this.page = function(index){
-
+    let page = files[index];
+    let result = extractor.extractFiles([page.name]);
+    let image = path.join(process.cwd(), page.name);
+    let data = fs.readFileSync(image);
+    fs.unlink(image);
+    return data;
   }
 }
 
