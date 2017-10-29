@@ -3,6 +3,7 @@ import { browserHistory, Router } from 'react-router'
 import { Provider } from 'react-redux'
 import PropTypes from 'prop-types'
 import ReactSwipe from 'react-swipe';
+import _ from 'lodash';
 
 import './Reader.scss'
 
@@ -30,14 +31,24 @@ componentWillUnmount() {
   window.removeEventListener("orientationchange", this.updateWindowDimensions);
 }
 
+getPages(archive, length){
+      archive = '/Users/jdbennet/projects/react/cb-web/tests/archives/comics/marvel/spidey.cbr';
+      length = 22;
+  let pages = _.times(length, index =>{
+    return `/page?archive=${archive}&number=${index}`;
+  })
+  return pages;
+}
+
 updateWindowDimensions() {
   let state = this.state;
   let width = this.isIpad() ? window.outerWidth +16 : window.outerWidth;
+  let pages = this.getPages();
   let height = window.innerHeight;
     state = Object.assign(state, {
       width,
       height,
-      pages: [ "bone.jpg", "bone_02.jpg","batman_w.jpg", "flash.jpg", "bone_04.jpg", "bone_03.jpg" ]
+      pages
     });
     this.setState(state);
 }
@@ -70,7 +81,7 @@ handleKeyPress(e){
 
     let pages = this.state.pages.map( (page,index) => {
       return <div style={style} className={class_names} key={'parent-' +index} >
-                <img src={'/icons/' +page}  key={index}/>
+                <img src={page}  key={index}/>
             </div>
     })
 
