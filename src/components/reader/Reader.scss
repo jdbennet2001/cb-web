@@ -8,9 +8,20 @@
     position: fixed;
 }
 
+.page{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    
+}
 
-
-
+.page img{
+    flex: 0 1 auto;
+    align-self: auto;
+}
 
 
 

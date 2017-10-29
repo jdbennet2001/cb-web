@@ -33,9 +33,9 @@ componentWillUnmount() {
 updateWindowDimensions() {
   let state = this.state;
     state = Object.assign(state, {
-      width: window.innerWidth,
+      width: window.outerWidth,
       height: window.innerHeight,
-      pages: [ "bone.jpg", "bone_02.jpg","bone_04.jpg", "bone_03.jpg" ]
+      pages: [ "bone.jpg", "bone_02.jpg","batman_w.jpg", "flash.jpg", "bone_04.jpg", "bone_03.jpg" ]
     });
     //alert(`${state.width} - ${state.height}`)
     this.setState(state);
@@ -54,7 +54,7 @@ handleClick(){
 
 
     let pages = this.state.pages.map( (page,index) => {
-      return <div style={style} key={'parent-' +index} >
+      return <div style={style} className='page' key={'parent-' +index} >
                 <img src={'/icons/' +page}  key={index}/>
             </div>
     })
