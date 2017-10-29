@@ -32,15 +32,19 @@ componentWillUnmount() {
 
 updateWindowDimensions() {
   let state = this.state;
+  let width = this.isIpad() ? window.outerWidth +16 : window.outerWidth;
+  let height = window.innerHeight;
     state = Object.assign(state, {
-      width: window.outerWidth,
-      height: window.innerHeight,
+      width,
+      height,
       pages: [ "bone.jpg", "bone_02.jpg","batman_w.jpg", "flash.jpg", "bone_04.jpg", "bone_03.jpg" ]
     });
-    //alert(`${state.width} - ${state.height}`)
     this.setState(state);
 }
 
+isIpad(){
+  return navigator.userAgent.indexOf('Chrome') == -1;
+}
 
 handleKeyPress(e){
 
@@ -61,10 +65,11 @@ handleKeyPress(e){
 
 
     let style = {height : this.state.height, width: this.state.width};
+    let class_names = this.isIpad() ? 'page ipad' : 'page';
 
 
     let pages = this.state.pages.map( (page,index) => {
-      return <div style={style} className='page' key={'parent-' +index} >
+      return <div style={style} className={class_names} key={'parent-' +index} >
                 <img src={'/icons/' +page}  key={index}/>
             </div>
     })
