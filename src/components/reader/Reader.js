@@ -41,8 +41,18 @@ updateWindowDimensions() {
     this.setState(state);
 }
 
-handleClick(){
+
+handleKeyPress(e){
+
+  const RIGHT_ARROW = 39;
+  const LEFT_ARROW = 37;
+
+
+  if (e.keyCode == RIGHT_ARROW){
    this.reactSwipe.next();
+  }else if (e.keyCode=== LEFT_ARROW){
+    this.reactSwipe.prev();
+  }
 }
 
 
@@ -60,7 +70,7 @@ handleClick(){
     })
 
     return (
-      <div className='reader'  onClick={() => this.handleClick()} >
+      <div className='reader' tabIndex='0' onKeyDown={(event) => this.handleKeyPress(event)} >
        <ReactSwipe key={pages.length} ref={reactSwipe => this.reactSwipe = reactSwipe}  className="carousel" swipeOptions={{continuous: false}}>
           {pages}
       </ReactSwipe>
