@@ -11,7 +11,7 @@ class Reader extends React.Component {
 constructor(props) {
   super(props);
   this.state = {
-    pages: [ "bone.jpg", "bone_02.jpg","bone_03.jpg" ],
+    pages: [],
     offset: 0
   };
 
@@ -21,16 +21,24 @@ constructor(props) {
 componentDidMount() {
   this.updateWindowDimensions();
   window.addEventListener('resize', this.updateWindowDimensions);
+
+  window.addEventListener("orientationchange", this.updateWindowDimensions);
 }
 
 componentWillUnmount() {
   window.removeEventListener('resize', this.updateWindowDimensions);
+  window.removeEventListener("orientationchange", this.updateWindowDimensions);
 }
 
 updateWindowDimensions() {
   let state = this.state;
-      state = Object.assign(state, { width: window.innerWidth, height: window.innerHeight });
-  this.setState(state);
+    state = Object.assign(state, {
+      width: window.innerWidth,
+      height: window.innerHeight,
+      pages: [ "bone.jpg", "bone_02.jpg","bone_04.jpg", "bone_03.jpg" ]
+    });
+    //alert(`${state.width} - ${state.height}`)
+    this.setState(state);
 }
 
 handleClick(){
@@ -41,22 +49,19 @@ handleClick(){
 
   render () {
 
-    // let pages = this.state.pages.map( (page, index) =>{
-    //     const style = { width: this.state.width };
-    //     return <div className='page' style={style} key={'bone' + index}><img src={'/icons/' +page} /></div>
-    // })
 
-    // let style = {height : this.state.height, width: this.state.width};
+    let style = {height : this.state.height, width: this.state.width};
 
-    let style={};
 
     let pages = this.state.pages.map( (page,index) => {
-      return <img src={'/icons/' +page} style={style} key={index}/>
+      return <div style={style} key={'parent-' +index} >
+                <img src={'/icons/' +page}  key={index}/>
+            </div>
     })
 
     return (
-      <div className='reader' onClick={() => this.handleClick()} >
-       <ReactSwipe ref={reactSwipe => this.reactSwipe = reactSwipe}  className="carousel" swipeOptions={{continuous: false}}>
+      <div className='reader'  onClick={() => this.handleClick()} >
+       <ReactSwipe key={pages.length} ref={reactSwipe => this.reactSwipe = reactSwipe}  className="carousel" swipeOptions={{continuous: false}}>
           {pages}
       </ReactSwipe>
       </div>
