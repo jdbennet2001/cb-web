@@ -9,7 +9,6 @@ class Folder extends React.Component {
   state = { open: false };
 
   handleClick = (e) => {
-    debugger;
     this.props.loadFolder(this.props.directory);
 
     this.setState({ open: !this.state.open });
