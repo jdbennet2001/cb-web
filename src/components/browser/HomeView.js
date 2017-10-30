@@ -1,7 +1,7 @@
 import React from 'react'
 import './HomeView.scss'
-import NavList from './NavList'
-import CoversView from './CoversView'
+import NavList from './nav-pane/NavList'
+import CoversView from './dashboard/CoversView'
 import TitleBar from './TitleBar'
 
 export const HomeView = () => (

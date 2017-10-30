@@ -4,7 +4,7 @@ import React      from 'react';
 import PropTypes  from 'prop-types';
 import {connect}  from 'react-redux'
 import { browserHistory} from 'react-router'
-import './Tile.scss';
+import './TitleBar.scss';
 
 
 

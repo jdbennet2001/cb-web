@@ -5,7 +5,7 @@ import PropTypes  from 'prop-types';
 import {connect}  from 'react-redux'
 import './CoversView.scss';
 
-import Folder     from './Folder';
+
 import Tile       from './Tile';
 
 class CoversView extends React.Component {
