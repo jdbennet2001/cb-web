@@ -32,8 +32,19 @@ componentWillUnmount() {
 }
 
 getPages(archive, length){
-      archive = '/Users/jdbennet/projects/react/cb-web/tests/archives/comics/marvel/spidey.cbr';
-      length = 22;
+
+    var hash = window.location.hash.substr(1);
+
+    var result = hash.split('&').reduce(function (result, item) {
+        var parts = item.split('=');
+        result[parts[0]] = parts[1];
+        return result;
+    }, {});
+
+    debugger;
+
+      archive = result.archive;
+      length = parseInt(result.length);
   let pages = _.times(length, index =>{
     return `/page?archive=${archive}&number=${index}`;
   })

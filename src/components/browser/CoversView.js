@@ -6,6 +6,7 @@ import {connect}  from 'react-redux'
 import './CoversView.scss';
 
 import Folder     from './Folder';
+import Tile       from './Tile';
 
 class CoversView extends React.Component {
 
@@ -14,20 +15,10 @@ class CoversView extends React.Component {
 
 
   render() {
-
-
-    debugger;
-
     return (
       <div className='covers-area'>
         {this.props.files.map(file =>{
-          return <div className='tile'>
-            <div className='imageArea'>
-              <img className='cover' src={'/cover/' +file.name}></img>
-            </div>
-            <div className='title'>{file.name}</div>
-            <div className='pageCount'>{file.length}</div>
-          </div>;
+          return <Tile file_name={file.name} file_length={file.length} file_location={file.location}></Tile>
         })}
       </div>
     );

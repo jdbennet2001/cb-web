@@ -9,7 +9,7 @@ export const HomeView = () => (
       <NavList></NavList>
     </div>
     <div className='content-pane'>
-      <CoversView></CoversView>
+      <CoversView router={this.props}></CoversView>
     </div>
   </div>
 )

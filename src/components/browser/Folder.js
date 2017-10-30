@@ -46,7 +46,6 @@ function fetchFolder(directory) {
         return response.json();
       })
       .then(files => {
-        debugger;
         return dispatch({ type: "FOLDER", files: files });
       });
   };
