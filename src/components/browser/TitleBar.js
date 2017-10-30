@@ -13,19 +13,23 @@ class Tile extends React.Component {
   componentDidMount(){
   }
 
-  handleClick(){
-    browserHistory.push(`/reader#archive=${this.props.file_location}&length=${this.props.file_length}`);
+  handleIndex(){
+    fetch('/index').then( () =>{
+      console.log('Indexing complete');
+    })
+  }
+
+  handleRandom(){
+    alert('random');
   }
 
   render() {
 
     return (
-      <div className='tile' key={this.props.file_name +'_tile'}>
-        <div className='imageArea' onClick={() => this.handleClick() }>
-          <img className='cover' src={'/cover/' +this.props.file_name}></img>
-        </div>
-        <div className='title'>{this.props.file_name}</div>
-        <div className='pageCount'>{this.props.file_length}</div>
+      <div className='title-bar'>
+
+          <img onClick={()=> this.handleIndex()} src='/icons/cache.png'></img>
+          <img onClick={()=> this.handleRandom()} src='/icons/random.png'></img>
       </div>
     );
   }

@@ -36,12 +36,17 @@ if (project.env === 'development') {
   // when the application is compiled.
   app.use(express.static(path.resolve(project.basePath, 'public')))
 
-  let {cover, model} = require('./lib/library');
+  let {cover, model, index} = require('./lib/library');
   let {page} = require('./lib/archive');
 
   app.get('/model', function(req, res){
     res.json( model() );
   });
+
+  app.get('/index', function(req, res){
+    let path_to_library = path.join(__dirname, '../tests/archives')
+    index(path_to_library);
+  })
 
   /*
    Return the files in a given directory
@@ -58,7 +63,7 @@ if (project.env === 'development') {
 
 
   /*
-   Return the cover for a given issue. 
+   Return the cover for a given issue.
    @input the issue name (No path, example 'Spider-Man 01.cbr')
    */
   app.get("/cover/:name", function(req, res) {
@@ -74,7 +79,7 @@ if (project.env === 'development') {
   });
 
  /*
-   Return the cover for a given issue. 
+   Return the cover for a given issue.
    @input the issue name (No path, example 'Spider-Man 01.cbr')
    */
   app.get("/page", function(req, res) {

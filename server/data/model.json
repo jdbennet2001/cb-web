@@ -1,7 +1,7 @@
 {
     "folders": {
         "name": "archives",
-        "directory": "/Users/jonbennett/projects/react/cb-web/tests/archives/",
+        "directory": "/Users/jonbennett/projects/react/cb-web/tests/archives",
         "folders": [
             {
                 "name": "comics",
@@ -38,6 +38,12 @@
             "length": 37,
             "name": "Gun-Jou-2.zip",
             "location": "/Users/jonbennett/projects/react/cb-web/tests/archives/other/Gun-Jou-2.zip",
+            "directory": "/Users/jonbennett/projects/react/cb-web/tests/archives/other"
+        },
+        {
+            "length": 28,
+            "name": "Gun-Jou-3.zip",
+            "location": "/Users/jonbennett/projects/react/cb-web/tests/archives/other/Gun-Jou-3.zip",
             "directory": "/Users/jonbennett/projects/react/cb-web/tests/archives/other"
         },
         {

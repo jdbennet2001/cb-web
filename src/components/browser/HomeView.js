@@ -2,11 +2,11 @@ import React from 'react'
 import './HomeView.scss'
 import NavList from './NavList'
 import CoversView from './CoversView'
+import TitleBar from './TitleBar'
 
 export const HomeView = () => (
   <div className='browser-page'>
-    <div className='title-bar'>
-    </div>
+    <TitleBar></TitleBar>
     <div className='home-page'>
       <div className='nav-pane'>
         <NavList>
