@@ -22,8 +22,11 @@ class CoversView extends React.Component {
       <div className='covers-area'>
         {this.props.files.map(file =>{
           return <div className='tile'>
-            <img className='cover' src={'/cover/' +file.name}></img>
+            <div className='imageArea'>
+              <img className='cover' src={'/cover/' +file.name}></img>
+            </div>
             <div className='title'>{file.name}</div>
+            <div className='pageCount'>{file.length}</div>
           </div>;
         })}
       </div>
@@ -35,7 +38,6 @@ class CoversView extends React.Component {
 
 
 function mapStateToProps(state) {
-  debugger;
   return { files: state.folder  }
 }
 
