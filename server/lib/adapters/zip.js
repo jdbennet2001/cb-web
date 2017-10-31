@@ -8,7 +8,7 @@ function zip(filename){
   var zip = new admZip(filename);
   var zip_entries  = zip.getEntries();
   zip_entries = _.filter(zip_entries, zip_entry => {
-    return !S(zip_entry.entryName).startsWith('__')
+    return !( S(zip_entry.entryName).startsWith('__')  || zip_entry.isDirectory )
   })
 
 this.cover = function(){

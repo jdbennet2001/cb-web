@@ -67,8 +67,8 @@ if (project.env === 'development') {
    @input the issue name (No path, example 'Spider-Man 01.cbr')
    */
   app.get("/cover/:name", function(req, res) {
-
-    cover(req.params.name).then(data => {
+    let name = decodeURIComponent(req.params.name);
+    cover(name).then(data => {
       res.contentType('image/jpeg');
        res.end(data, 'binary');
     }, err => {
@@ -83,8 +83,10 @@ if (project.env === 'development') {
    @input the issue name (No path, example 'Spider-Man 01.cbr')
    */
   app.get("/page", function(req, res) {
+    debugger;
     try{
-      let data = page(req.query.archive, req.query.number);
+      let archive = decodeURIComponent(req.query.archive);
+      let data = page(archive, req.query.number);
           res.contentType('image/jpeg');
           res.end(data, 'binary');
     } catch(err) {

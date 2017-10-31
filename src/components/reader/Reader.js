@@ -41,12 +41,10 @@ getPages(archive, length){
         return result;
     }, {});
 
-    debugger;
-
       archive = result.archive;
       length = parseInt(result.length);
   let pages = _.times(length, index =>{
-    return `/page?archive=${archive}&number=${index}`;
+    return `/page?archive=${encodeURIComponent(archive)}&number=${index}`;
   })
   return pages;
 }
