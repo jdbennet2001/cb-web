@@ -31,7 +31,7 @@ componentWillUnmount() {
   window.removeEventListener("orientationchange", this.updateWindowDimensions);
 }
 
-getPages(archive, length){
+getPages(position = 0){
 
     var hash = window.location.hash.substr(1);
 
@@ -41,18 +41,28 @@ getPages(archive, length){
         return result;
     }, {});
 
-      archive = result.archive;
-      length = parseInt(result.length);
-  let pages = _.times(length, index =>{
-    return `/page?archive=${encodeURIComponent(archive)}&number=${index}`;
-  })
-  return pages;
+    const archive = result.archive;
+    const length = parseInt(result.length);
+
+    let pages = _.times(length, index =>{
+      return `/blank-page.png`;
+    })
+
+    let start_image = Math.max( position -1, 0 );
+    let end_image = Math.min(position + 2, length-1 );
+
+    for ( var i = start_image; i <= end_image; i++ ){
+      pages[i] = `/page?archive=${encodeURIComponent(archive)}&number=${i}`;
+    }
+
+    return pages;
 }
 
 updateWindowDimensions() {
+  let pos = this.reactSwipe.getPos();
   let state = this.state;
   let width = this.isIpad() ? window.outerWidth +16 : window.outerWidth;
-  let pages = this.getPages();
+  let pages = this.getPages(pos);
   let height = window.innerHeight;
     state = Object.assign(state, {
       width,
@@ -79,7 +89,13 @@ handleKeyPress(e){
   }
 }
 
-
+transitionHandler(){
+  let pos = this.reactSwipe.getPos();
+  let state = this.state;
+  let pages = this.getPages(pos);
+      state = Object.assign(state, {pages} );
+  this.setState(state);
+}
 
   render () {
 
@@ -94,9 +110,11 @@ handleKeyPress(e){
             </div>
     })
 
+    let swipeOptions={continuous: false, transitionEnd: this.transitionHandler.bind(this)}
+
     return (
       <div className='reader' tabIndex='0' onKeyDown={(event) => this.handleKeyPress(event)} >
-       <ReactSwipe key={pages.length} ref={reactSwipe => this.reactSwipe = reactSwipe}  className="carousel" swipeOptions={{continuous: false}}>
+       <ReactSwipe key={pages.length}  ref={reactSwipe => this.reactSwipe = reactSwipe}  className="carousel" swipeOptions={swipeOptions}>
           {pages}
       </ReactSwipe>
       </div>
