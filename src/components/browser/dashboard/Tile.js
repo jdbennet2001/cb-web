@@ -19,12 +19,15 @@ class Tile extends React.Component {
 
   render() {
 
+    let extension = this.props.file_name.lastIndexOf('.');
+    let title = this.props.file_name.substring(0, extension);
+
     return (
       <div className='tile' key={this.props.file_name +'_tile'}>
         <div className='imageArea' onClick={() => this.handleClick() }>
           <img className='cover' src={'/cover/' +encodeURIComponent(this.props.file_name)}></img>
         </div>
-        <div className='title'>{this.props.file_name}</div>
+        <div className='title'>{title}</div>
         <div className='pageCount'>{this.props.file_length}</div>
       </div>
     );
