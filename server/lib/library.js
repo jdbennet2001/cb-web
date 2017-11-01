@@ -6,13 +6,12 @@ const nconf     = require('nconf');
 const _         = require('lodash');
 const fs 				= require("fs");
 const jsonfile	= require('jsonfile');
+const util 			= require('util');
 
 const db    = new PouchDB('covers');
 
 //Update internal index during testing...
 let path_to_library = path.join(__dirname, '../../tests/archives')
-let archives = index_files(path_to_library);
-let covers = index_covers(archives);
 
 const {cover, pages, page}   = require('./archive');
 
@@ -49,7 +48,13 @@ module.exports.index = function(directory){
 
 		jsonfile.writeFileSync(path_to_model, {folders, archives}, {spaces: 4} );
 
-		return index_covers( files );
+		let covers =  index_covers( files );
+		covers.then( ()=> {
+			console.log('Indexing complete...');
+		}, err =>{
+			console.error(`Error indexing covers ${err.message}`);
+			console.error( util.inspect(err) );
+		})
 
 }
 
@@ -112,8 +117,6 @@ function index_covers( files ){
 		let queued  = files.filter(file => {
 			return !_.includes(covers, path.basename(file) );
 		})
-
-		debugger;
 
 		//Add new issues, one at a time
 		return _.reduce(queued, function(p, file){

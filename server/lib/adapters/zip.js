@@ -5,11 +5,17 @@ const S       = require('String');
 
 function zip(filename){
 
-  var zip = new admZip(filename);
-  var zip_entries  = zip.getEntries();
+var zip = new admZip(filename);
+var zip_entries = [];
+try {
+  zip_entries = zip.getEntries();
   zip_entries = _.filter(zip_entries, zip_entry => {
-    return !( S(zip_entry.entryName).startsWith('__')  || zip_entry.isDirectory )
-  })
+    return !(S(zip_entry.entryName).startsWith("__") || zip_entry.isDirectory);
+  });
+} catch (err) {
+  console.error(`Error opening ${filename}, ${err.message}`);
+}
+
 
 this.cover = function(){
   let zip_entry = _.head(zip_entries);

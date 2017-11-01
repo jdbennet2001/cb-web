@@ -8,10 +8,13 @@ function rar(filename){
   var extractor = unrar.createExtractorFromFile(filename);
   var list = extractor.getFileList();
 
-  // var list_status = _.head(list);
-  // assert.equal(list_status.state, 'SUCCESS');
+  var list_entries = [];
+  try{
 
-  var list_entries = _.last(list).fileHeaders;
+     list_entries = _.last(list).fileHeaders;
+  }catch(err){
+    console.error(`Error parsing ${filename}, ${err.message}`);
+  }
 
   var files = this.files = _.filter(list_entries, entry => {
     return entry.packSize > 0;
