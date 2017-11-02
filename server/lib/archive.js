@@ -24,15 +24,19 @@ module.exports.page = function(archive, index){
 function get_adapter(archive){
     let extention = path.extname(archive).toLowerCase();
 
-    debugger;
     const buffer = readChunk.sync(archive, 0, 262);
 
     let type = archiveType(buffer);
 
-    if ( type.ext === 'rar'){
+    if ( type.ext === undefined){
+      debugger;
+    }
+    else if ( type.ext === 'rar'){
       return new Rar(archive);
     }else if ( type.ext === 'zip'){
       return new Zip(archive);
+    }else{
+      debugger;
     }
 
     if (extention === '.cbz' || extention === '.zip'){

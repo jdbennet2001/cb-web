@@ -7,6 +7,9 @@ const _         = require('lodash');
 const fs 				= require("fs");
 const jsonfile	= require('jsonfile');
 const util 			= require('util');
+const resizeImg = require('resize-img');
+const each 			= require('promise-each');
+const sizeOf 		= require('image-size');
 
 const db    = new PouchDB('covers');
 
@@ -107,24 +110,22 @@ function index_file(file){
 /*
  Find all new archives, from a list of files, and add their covers to the database
  */
-function index_covers( files ){
+function index_covers(files) {
+  //Get all covers currently in database
+  return db.allDocs().then(doc => {
+    let covers = doc.rows.map(row => row.id);
 
-	//Get all covers currently in database
-	return db.allDocs().then(doc =>{
+    let queued = files.filter(file => {
+      return !_.includes(covers, path.basename(file));
+    });
 
-		let covers = doc.rows.map(row => row.id);
+    return Promise.resolve(queued).then(
+      each(val => { return index_cover(val);})
+    );
 
-		let queued  = files.filter(file => {
-			return !_.includes(covers, path.basename(file) );
-		})
-
-		//Add new issues, one at a time
-		return _.reduce(queued, function(p, file){
-			return index_cover(file);
-		}, Promise.resolve() )
-
-	})
+  });
 }
+
 
 /*
  Extract the cover from a given archive and file it in pouchdb
@@ -132,7 +133,16 @@ function index_covers( files ){
  function index_cover(file){
 	 let image 	= cover(file);
 	 let key 		= path.basename(file);
-	 return db.putAttachment(key, 'cover.jpg', image, 'test/jpg').then(result=>{
+
+	 //Calculate the appropriate scaling factor
+	 const dimensions = sizeOf(image);
+	 const h_scale = dimensions.height / 360;
+	 const width = _.floor(dimensions.width / h_scale);
+
+	 //Resize, and file
+	 return resizeImg(image, {height: 360, width:width}).then(buf =>{
+	 		return db.putAttachment(key, 'cover.jpg', buf, 'test/jpg')
+		}).then(result=>{
 		 console.log(`Added cover ${key} to database`);
 	 }, err => {
 		 console.error(`Error adding cover ${key} to database, ${err.message}`);
