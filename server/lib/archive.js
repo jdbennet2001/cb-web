@@ -1,6 +1,7 @@
 const path        = require('path');
 const archiveType = require('archive-type');
 const readChunk   = require('read-chunk');
+const _           = require('lodash');
 
 const Zip      = require('./adapters/zip');
 const Rar      = require('./adapters/rar');
@@ -28,23 +29,12 @@ function get_adapter(archive){
 
     let type = archiveType(buffer);
 
-    if ( type.ext === undefined){
-      debugger;
-    }
-    else if ( type.ext === 'rar'){
+    if ( _.get(type, 'ext') === 'rar'){
       return new Rar(archive);
-    }else if ( type.ext === 'zip'){
+    }else if (  _.get(type, 'ext') === 'zip'){
       return new Zip(archive);
     }else{
-      debugger;
-    }
-
-    if (extention === '.cbz' || extention === '.zip'){
-      return new Zip(archive);
-    }else if ( extention === '.cbr' || extention === '.rar'){
-      return new Rar(archive);
-    }else if ( extention === '.cbt' || extention === '.tar'){
-      return new Tar(archive);
+      throw ('Unsupported file type for ' + archive);
     }
 
     throw new Error(`Unsupported File Type: ${archive}`);

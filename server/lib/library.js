@@ -46,11 +46,15 @@ module.exports.index = function(directory){
 		let files   = index_files(directory);
 		let archives = files.map(file =>  index_file(file));
 
-		model = {folders, archives};
+		//Filter out empty responses..
+	  archives = _.filter(archives, archive =>{
+			return !_.isEmpty(archive);
+		})
 
-
+		//Write data to disk
 		jsonfile.writeFileSync(path_to_model, {folders, archives}, {spaces: 4} );
 
+		//Index covers
 		let covers =  index_covers( files );
 		covers.then( ()=> {
 			console.log('Indexing complete...');
@@ -93,6 +97,12 @@ function index_files(directory){
 			return  _.concat(files, index_files(folder));
 	}, contents.files)
 
+	let archive_extensions = ['.cbz', '.zip', '.rar', '.cbr'];
+	files = _.filter(files, file=>{
+		let extention = path.extname(file).toLowerCase();
+		return _.includes(archive_extensions, extention);
+	})
+
 	return files;
 }
 
@@ -100,11 +110,16 @@ function index_files(directory){
  Return information about a given file on the system.
  */
 function index_file(file){
-	let length = pages(file);
-	let name 	 = path.basename(file);
-	let location = file;
-	let directory = path.dirname(file);
-	return {length, name ,location, directory};
+	console.log(`Indexing file: ${file}`);
+	try{
+		let length = pages(file);
+		let name 	 = path.basename(file);
+		let location = file;
+		let directory = path.dirname(file);
+		return {length, name ,location, directory};
+	}catch(err){
+		console.error(`Error indexing file: ${err.message} for ${file}`);
+	}
 }
 
 /*
