@@ -3,9 +3,11 @@ const unrar   = require("node-unrar-js");
 const path    = require('path');
 const _       = require('lodash');
 
-function rar(filename){
+const image_extensions = ['.gif', '.jpg', '.jpeg', '.tiff', '.bmp'];
 
-  var extractor = unrar.createExtractorFromFile(filename);
+function rar(filename){
+  const path_to_tmp_dir = path.join(process.cwd(), './tmp');
+  var extractor = unrar.createExtractorFromFile(filename, path_to_tmp_dir);
   var list = extractor.getFileList();
 
   var list_entries = [];
@@ -17,13 +19,17 @@ function rar(filename){
   }
 
   var files = this.files = _.filter(list_entries, entry => {
-    return entry.packSize > 0;
+    if ( entry.packSize === 0 ){
+      return false; //Directory
+    }
+    let extension = path.extname(entry.name).toLowerCase();
+    return _.includes( image_extensions, extension );
   })
 
   this.cover = function(){
     let page = _.head(files);
     let result = extractor.extractFiles([page.name]);
-    let image = path.join(process.cwd(), page.name);
+    let image = path.join(process.cwd(), 'tmp', page.name);
     let data = fs.readFileSync(image);
     fs.unlink(image);
     return data;
@@ -36,7 +42,7 @@ function rar(filename){
   this.page = function(index){
     let page = files[index];
     let result = extractor.extractFiles([page.name]);
-    let image = path.join(process.cwd(), page.name);
+    let image = path.join(process.cwd(), 'tmp', page.name);
     let data = fs.readFileSync(image);
     fs.unlink(image);
     return data;
