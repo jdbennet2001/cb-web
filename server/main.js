@@ -45,7 +45,7 @@ if (project.env === 'development') {
 
   app.get('/index', function(req, res){
     let path_to_library = path.join(__dirname, '../tests/archives')
-    index(path_to_library);
+    index('/Volumes/MainExt/webbox/');
   })
 
   /*
@@ -83,7 +83,6 @@ if (project.env === 'development') {
    @input the issue name (No path, example 'Spider-Man 01.cbr')
    */
   app.get("/page", function(req, res) {
-    debugger;
     try{
       let archive = decodeURIComponent(req.query.archive);
       let data = page(archive, req.query.number);

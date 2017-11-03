@@ -47,7 +47,7 @@ module.exports.index = function(directory){
 		let archives = files.map(file =>  index_file(file));
 
 		//Filter out empty responses..
-	  archives = _.filter(archives, archive =>{
+	  	archives = _.filter(archives, archive =>{
 			return !_.isEmpty(archive);
 		})
 
@@ -111,6 +111,15 @@ function index_files(directory){
  */
 function index_file(file){
 	console.log(`Indexing file: ${file}`);
+
+	//Return entry from cache, if possible
+	let entry = _.find(model.archives, archive =>{
+		return archive.location === file;
+	})
+	if (entry){
+		return entry;
+	}
+
 	try{
 		let length = pages(file);
 		let name 	 = path.basename(file);
@@ -128,6 +137,7 @@ function index_file(file){
 function index_covers(files) {
   //Get all covers currently in database
   return db.allDocs().then(doc => {
+  	debugger;
     let covers = doc.rows.map(row => row.id);
 
     let queued = files.filter(file => {
@@ -146,23 +156,33 @@ function index_covers(files) {
  Extract the cover from a given archive and file it in pouchdb
  */
  function index_cover(file){
-	 let image 	= cover(file);
-	 let key 		= path.basename(file);
 
 	 //Calculate the appropriate scaling factor
-	 const dimensions = sizeOf(image);
-	 const h_scale = dimensions.height / 360;
-	 const width = _.floor(dimensions.width / h_scale);
+	try {
 
-	 //Resize, and file
-	 return resizeImg(image, {height: 360, width:width}).then(buf =>{
-	 		return db.putAttachment(key, 'cover.jpg', buf, 'test/jpg')
-		}).then(result=>{
-		 console.log(`Added cover ${key} to database`);
-	 }, err => {
-		 console.error(`Error adding cover ${key} to database, ${err.message}`);
-		 return Promise.resolve(err);
-	 })
+	 	let image 	= cover(file);
+		let key 	= path.basename(file);
+		
+		const dimensions = sizeOf(image);
+		const h_scale = dimensions.height / 360;
+		const width = _.floor(dimensions.width / h_scale);
+
+		//Resize, and file
+		 return resizeImg(image, {height: 360, width:width}).then(buf =>{
+		 	return db.putAttachment(key, 'cover.jpg', buf, 'test/jpg');
+		 }).then(result=>{
+			 console.log(`Added cover ${key} to database`);
+		 }).catch( err => {
+			 console.error(`Error adding cover ${key} to database, ${err.message}`);
+			 return Promise.resolve(err);
+		 })
+
+	} catch (err) {
+		console.error(`Error adding ${file} to db - ${err.message}`);
+		return Promise.resolve(err);
+	}
+
+	 
  }
 
 /*
