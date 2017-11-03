@@ -12,7 +12,6 @@ function rar(filename){
 
   var list_entries = [];
   try{
-
      list_entries = _.last(list).fileHeaders;
   }catch(err){
     console.error(`Error parsing ${filename}, ${err.message}`);
@@ -25,6 +24,8 @@ function rar(filename){
     let extension = path.extname(entry.name).toLowerCase();
     return _.includes( image_extensions, extension );
   })
+
+  files = _.sortBy(files, file => {return file.name});
 
   this.cover = function(){
     let page = _.head(files);
