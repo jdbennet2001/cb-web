@@ -1,6 +1,7 @@
 .browser-page{
   width:100%;
   min-height:100%;
+  height:100%;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -41,9 +42,11 @@
     flex: 0 0 auto;
     align-self: auto;
     width: 300px;
+    overflow-y: scroll;
     }
 
 .content-pane {
     flex: 1 1 auto;
     align-self: auto;
+    overflow-y: scroll;
     }
