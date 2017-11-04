@@ -13,7 +13,8 @@ constructor(props) {
   super(props);
   this.state = {
     pages: [],
-    offset: 0
+    offset: 0,
+    home_icon: false
   };
 
   this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
@@ -89,6 +90,18 @@ handleKeyPress(e){
   }
 }
 
+handleClick(e){
+  let state = this.state;
+  state.home_icon = !state.home_icon;
+  this.setState(state);
+}
+
+goBack(){
+ 
+ browserHistory.push(`/`);
+ 
+}
+
 transitionHandler(){
   let pos = this.reactSwipe.getPos();
   let state = this.state;
@@ -110,10 +123,16 @@ transitionHandler(){
             </div>
     })
 
+    let reader_back = <div></div>;
+    if (this.state.home_icon){
+      reader_back = <div onClick={() =>this.goBack()} className='reader-back'><img src='/icons/home.png'></img></div>
+    }
+
     let swipeOptions={continuous: false, transitionEnd: this.transitionHandler.bind(this)}
 
     return (
-      <div className='reader' tabIndex='0' onKeyDown={(event) => this.handleKeyPress(event)} >
+      <div className='reader' tabIndex='0' onClick={()=>this.handleClick()} onKeyDown={(event) => this.handleKeyPress(event)} >
+       {reader_back}
        <ReactSwipe key={pages.length}  ref={reactSwipe => this.reactSwipe = reactSwipe}  className="carousel" swipeOptions={swipeOptions}>
           {pages}
       </ReactSwipe>

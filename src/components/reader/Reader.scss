@@ -7,6 +7,12 @@
     position: fixed;
 }
 
+.reader-back {
+    position: fixed;
+    right: 25px;
+    top: 25px;
+    z-index: 25;
+}
 
 /* Remove ipad style for desktop development */
 .page.ipad {
