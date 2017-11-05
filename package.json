@@ -8,7 +8,8 @@
     "compile": "node build/scripts/compile",
     "build": "npm run clean && cross-env NODE_ENV=production npm run compile",
     "debug": "cross-env NODE_ENV=development node --inspect --debug-brk build/scripts/start",
-    "start": "cross-env NODE_ENV=development node build/scripts/start",
+    "start": "cross-env NODE_ENV=production node build/scripts/start",
+    "develop": "cross-env NODE_ENV=development node build/scripts/start",
     "test": "cross-env NODE_ENV=test karma start build/karma.config",
     "test:watch": "npm test -- --watch",
     "lint": "eslint .",
@@ -51,6 +52,7 @@
     "redux": "^3.6.0",
     "redux-thunk": "^2.2.0",
     "resize-img": "^1.1.2",
+    "sharp": "^0.18.4",
     "string": "^3.3.3",
     "walkdir": "0.0.12",
     "whatwg-fetch": "^2.0.3"

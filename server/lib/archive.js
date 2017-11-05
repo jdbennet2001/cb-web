@@ -2,6 +2,7 @@ const path        = require('path');
 const archiveType = require('archive-type');
 const readChunk   = require('read-chunk');
 const _           = require('lodash');
+const sharp       = require('sharp');
 
 const Zip      = require('./adapters/zip');
 const Rar      = require('./adapters/rar');
@@ -19,7 +20,8 @@ module.exports.pages = function(archive){
 
 module.exports.page = function(archive, index){
    let adapter = get_adapter(archive);
-  return adapter.page(index);
+   let buffer = adapter.page(index);
+   return sharp(buffer).resize(1024).toBuffer();
 }
 
 function get_adapter(archive){
