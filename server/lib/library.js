@@ -11,7 +11,10 @@ const resizeImg = require('resize-img');
 const each 			= require('promise-each');
 const sizeOf 		= require('image-size');
 
-const db    = new PouchDB('covers');
+const db  = new PouchDB('http://127.0.0.1:5984/covers');
+db.info().then(function (info) {
+  console.log(`Covers db data is ${JSON.stringify(info)}`);
+})
 
 //Update internal index during testing...
 let path_to_library = path.join(__dirname, '../../tests/archives')
@@ -157,30 +160,17 @@ function index_covers(files) {
  */
  function index_cover(file){
 
-	 //Calculate the appropriate scaling factor
-	try {
+ 	const COVER_PAGE =0;
+ 	const THUMBNAIL_SIZE = 360;
 
-	 	let image 	= cover(file);
-		let key 	= path.basename(file);
-		
-		const dimensions = sizeOf(image);
-		const h_scale = dimensions.height / 360;
-		const width = _.floor(dimensions.width / h_scale);
+	let key = path.basename(file);
 
-		//Resize, and file
-		 return resizeImg(image, {height: 360, width:width}).then(buf =>{
-		 	return db.putAttachment(key, 'cover.jpg', buf, 'test/jpg');
-		 }).then(result=>{
-			 console.log(`Added cover ${key} to database`);
-		 }).catch( err => {
-			 console.error(`Error adding cover ${key} to database, ${err.message}`);
-			 return Promise.resolve(err);
-		 })
-
-	} catch (err) {
-		console.error(`Error adding ${file} to db - ${err.message}`);
-		return Promise.resolve(err);
-	}
+ 	return page(file, COVER_PAGE, THUMBNAIL_SIZE).then(data =>{
+ 		return db.putAttachment(key, 'cover.jpg', data, 'test/jpg');
+ 	}).catch(err =>{
+ 		console.error(`Error storing cover for ${key}`);
+ 		return Promise.resolve(err);
+ 	});
 
 	 
  }

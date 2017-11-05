@@ -18,20 +18,18 @@ module.exports.pages = function(archive){
   return adapter.pages();
 }
 
-module.exports.page = function(archive, index){
-   let file = path.basename(archive);
-   console.log( `Getting page ${index} for ${file}`)
-   let adapter = get_adapter(archive);
-   let buffer = adapter.page(index);
-   console.log('.. resizing image');
-   let client_image = sharp(buffer).resize(1024).toBuffer();
-    client_image.then(
-      data => {
-        console.log(".. returning resized image");
-      }, err => {
-        console.error(`.. error resizing image ${err.message}`);
-      });   
-    return client_image;
+module.exports.page = function(archive, index, image_size=1024){
+  try{
+     let file = path.basename(archive);
+     console.log( `Getting page ${index} for ${file}, at ${image_size}px`);
+     let adapter = get_adapter(archive);
+     let buffer = adapter.page(index);
+     let client_image = sharp(buffer).resize(image_size).toBuffer();
+     return client_image;
+   }catch(err){
+    console.error(`Error resizing image, ${err.message}`);
+    return Promise.reject(err);
+   }
 }
 
 function get_adapter(archive){
