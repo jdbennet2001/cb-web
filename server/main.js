@@ -83,15 +83,16 @@ if (project.env === 'development') {
    @input the issue name (No path, example 'Spider-Man 01.cbr')
    */
   app.get("/page", function(req, res) {
-    try{
+
       let archive = decodeURIComponent(req.query.archive);
-      let data = page(archive, req.query.number);
+      page(archive, req.query.number).then(data =>{
           res.contentType('image/jpeg');
           res.end(data, 'binary');
-    } catch(err) {
-      const path_to_balloon = process.cwd() + '/public/icons/balloon.png'
-      res.sendFile(path_to_balloon);
-    }
+      }).catch(err =>{
+        const path_to_balloon = process.cwd() + '/public/icons/balloon.png'
+        res.sendFile(path_to_balloon);
+
+      })
 
   });
 
