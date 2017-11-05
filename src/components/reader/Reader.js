@@ -46,7 +46,7 @@ getPages(position = 0){
     const length = parseInt(result.length);
 
     let pages = _.times(length, index =>{
-      return `/blank-page.png`;
+      return `/blank-svg-page.svg`;
     })
 
     let start_image = Math.max( position -1, 0 );
@@ -105,6 +105,11 @@ goBack(){
 transitionHandler(){
   let pos = this.reactSwipe.getPos();
   let state = this.state;
+
+  if ( pos === state.pages.length){
+    alert('!');
+  }
+
   let pages = this.getPages(pos);
       state = Object.assign(state, {pages} );
   this.setState(state);
@@ -128,7 +133,10 @@ transitionHandler(){
       reader_back = <div onClick={() =>this.goBack()} className='reader-back'><img src='/icons/home.png'></img></div>
     }
 
-    let swipeOptions={continuous: false, transitionEnd: this.transitionHandler.bind(this)}
+    let swipeOptions = {
+      continuous: false,
+      transitionEnd: this.transitionHandler.bind(this)
+    };
 
     return (
       <div className='reader' tabIndex='0' onClick={()=>this.handleClick()} onKeyDown={(event) => this.handleKeyPress(event)} >
