@@ -3,6 +3,7 @@ import { browserHistory, Router } from 'react-router'
 import { Provider } from 'react-redux'
 import PropTypes from 'prop-types'
 import ReactSwipe from 'react-swipe';
+import {connect}  from 'react-redux'
 import _ from 'lodash';
 
 import './Reader.scss'
@@ -11,10 +12,24 @@ class Reader extends React.Component {
 
 constructor(props) {
   super(props);
+
+    var hash = window.location.hash.substr(1);
+
+    var result = hash.split('&').reduce(function (result, item) {
+        var parts = item.split('=');
+        result[parts[0]] = parts[1];
+        return result;
+    }, {});
+
+    const archive = result.archive;
+    const length = parseInt(result.length);
+
   this.state = {
     pages: [],
     offset: 0,
-    home_icon: false
+    home_icon: false,
+    archive,
+    length
   };
 
   this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
@@ -34,23 +49,15 @@ componentWillUnmount() {
 
 getPages(position = 0){
 
-    var hash = window.location.hash.substr(1);
-
-    var result = hash.split('&').reduce(function (result, item) {
-        var parts = item.split('=');
-        result[parts[0]] = parts[1];
-        return result;
-    }, {});
-
-    const archive = result.archive;
-    const length = parseInt(result.length);
+    let archive  = this.state.archive;
+    let length = this.state.length;
 
     let pages = _.times(length, index =>{
       return `/blank-svg-page.svg`;
     })
 
-    let start_image = Math.max( position -1, 0 );
-    let end_image = Math.min(position + 2, length-1 );
+    let start_image = Math.max( position, 0 );
+    let end_image = Math.min(position + 1, length-1 );
 
     for ( var i = start_image; i <= end_image; i++ ){
       pages[i] = `/page?archive=${encodeURIComponent(archive)}&number=${i}`;
@@ -105,9 +112,19 @@ goBack(){
 transitionHandler(){
   let pos = this.reactSwipe.getPos();
   let state = this.state;
+  let archive = state.archive;
 
-  if ( pos === state.pages.length){
-    alert('!');
+  //Code to move to next issue in directory
+  if ( pos === this.state.pages.length-1){
+    let issue = _.findIndex(this.props.files, file=>{
+      return file.location === archive;
+    })
+
+    let next = _.nth(this.props.files, ++issue);
+    if ( next ){
+      this.state.archive = next.location;
+      this.state.length = next.length;
+    }
   }
 
   let pages = this.getPages(pos);
@@ -123,7 +140,7 @@ transitionHandler(){
 
 
     let pages = this.state.pages.map( (page,index) => {
-      return <div style={style} className={class_names} key={'parent-' +index} >
+      return <div style={style} className={class_names} key={'parent-'+index} >
                 <img src={page}  key={index}/>
             </div>
     })
@@ -149,4 +166,16 @@ transitionHandler(){
   }
 }
 
-export default Reader
+function mapStateToProps(state) {
+  return { files: state.folder  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    open: () =>
+      dispatch({type: 'OPEN_ARCHIVE'})
+  };
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Reader)
