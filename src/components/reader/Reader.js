@@ -56,8 +56,8 @@ getPages(position = 0){
       return `/blank-svg-page.svg`;
     })
 
-    let start_image = Math.max( position, 0 );
-    let end_image = Math.min(position + 1, length-1 );
+    let start_image = Math.max( position-1, 0 );
+    let end_image = Math.min(position + 2, length-1 );
 
     for ( var i = start_image; i <= end_image; i++ ){
       pages[i] = `/page?archive=${encodeURIComponent(archive)}&number=${i}`;
@@ -124,7 +124,9 @@ transitionHandler(){
     if ( next ){
       this.state.archive = next.location;
       this.state.length = next.length;
+      pos = 0;
     }
+
   }
 
   let pages = this.getPages(pos);
@@ -155,10 +157,12 @@ transitionHandler(){
       transitionEnd: this.transitionHandler.bind(this)
     };
 
+    let swipe_key = `${this.state.archive}_${pages.length}`
+
     return (
       <div className='reader' tabIndex='0' onClick={()=>this.handleClick()} onKeyDown={(event) => this.handleKeyPress(event)} >
        {reader_back}
-       <ReactSwipe key={pages.length}  ref={reactSwipe => this.reactSwipe = reactSwipe}  className="carousel" swipeOptions={swipeOptions}>
+       <ReactSwipe key={swipe_key} ref={reactSwipe => this.reactSwipe = reactSwipe}  className="carousel" swipeOptions={swipeOptions}>
           {pages}
       </ReactSwipe>
       </div>
