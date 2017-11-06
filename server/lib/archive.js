@@ -18,13 +18,16 @@ module.exports.pages = function(archive){
   return adapter.pages();
 }
 
-module.exports.page = function(archive, index, image_size=1024){
+module.exports.page = function(archive, index, image_size=2048){
   try{
      let file = path.basename(archive);
      console.log( `Getting page ${index} for ${file}, at ${image_size}px`);
      let adapter = get_adapter(archive);
      let buffer = adapter.page(index);
-     let client_image = sharp(buffer).resize(image_size).toBuffer();
+     let client_image = sharp(buffer) .resize(image_size, image_size)
+                                      .max()
+                                      .toFormat('jpeg')
+                                      .toBuffer()
      return client_image;
    }catch(err){
     console.error(`Error resizing image, ${err.message}`);
