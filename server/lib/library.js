@@ -11,7 +11,7 @@ const resizeImg = require('resize-img');
 const each 			= require('promise-each');
 const sizeOf 		= require('image-size');
 
-const db  = new PouchDB('http://127.0.0.1:5984/covers');
+const db  = new PouchDB('covers');
 db.info().then(function (info) {
   console.log(`Covers db data is ${JSON.stringify(info)}`);
 })
@@ -170,7 +170,7 @@ function index_covers(files) {
  		return Promise.resolve(err);
  	});
 
-	 
+
  }
 
 /*
