@@ -37,9 +37,7 @@ module.exports.model = function(){
 }
 
 module.exports.cover = function(name){
-	return db.allDocs().then( docs => {
-		return db.getAttachment(name, 'cover.jpg')
-	});
+	return db.getAttachment(name, 'cover.jpg')
 }
 
 
