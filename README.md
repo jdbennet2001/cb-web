@@ -1,9 +1,25 @@
 # CB-Web
 
-IOS Web App: Based off of: https://github.com/davezuko/react-redux-starter-kit.git
+IOS Web App for cataloging / reading archives.
 
-Supporting three basic modes:
+Leverage Redux and React with a model:
 
-1. Browse an given directory full of archives
-2. Open an comic for reading
-3. Show a random selection of archives.
+```
+/* Full catalog structure */
+{
+  folders: {
+    name: string
+    directory: string
+    folders: [ .. ]
+  },
+  /* Archives in currently selected folder */
+  archives: [
+    {
+      name: string,
+      length: int,
+      directory: string,
+      location: string
+    }
+  ]
+}
+```
