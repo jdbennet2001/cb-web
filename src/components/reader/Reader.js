@@ -39,12 +39,12 @@ componentDidMount() {
   this.updateWindowDimensions();
   window.addEventListener('resize', this.updateWindowDimensions);
 
-  window.addEventListener("orientationchange", this.updateWindowDimensions);
+  window.addEventListener("orientationchange", this.handleOrientationChange);
 }
 
 componentWillUnmount() {
   window.removeEventListener('resize', this.updateWindowDimensions);
-  window.removeEventListener("orientationchange", this.updateWindowDimensions);
+  window.removeEventListener("orientationchange", this.handleOrientationChange);
 }
 
 getPages(position = 0){
@@ -84,6 +84,12 @@ isIpad(){
   return navigator.userAgent.indexOf('Chrome') == -1;
 }
 
+handleOrientationChange(e){
+  //Force a page reload to get the correct aspect ratio
+  debugger;
+  browserHistory.push(`${window.location.pathname}${window.location.hash}`);
+}
+
 handleKeyPress(e){
 
   const RIGHT_ARROW = 39;
@@ -104,9 +110,9 @@ handleClick(e){
 }
 
 goBack(){
- 
+
  browserHistory.push(`/`);
- 
+
 }
 
 transitionHandler(){
