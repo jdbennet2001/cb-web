@@ -67,14 +67,25 @@ getPages(position = 0){
 }
 
 updateWindowDimensions() {
+
+
   let pos = this.reactSwipe.getPos();
   let state = this.state;
   let width = this.isIpad() ? window.outerWidth +16 : window.outerWidth;
   let pages = this.getPages(pos);
   let height = window.innerHeight;
+
+  let screen = {w: window.screen.width, h: window.screen.height,orientation: 'portrait'};
+  if ( Math.abs(window.orientation) == 90 ){
+      screen = {w: window.screen.height, h: window.screen.width, orientation: 'landscape'}
+  }
+
+  alert( `${JSON.stringify(screen)} - ${window.orientation}`);
+
+
     state = Object.assign(state, {
-      width,
-      height,
+      width: screen.w,
+      height: screen.h,
       pages
     });
     this.setState(state);
@@ -157,7 +168,7 @@ transitionHandler(){
       transitionEnd: this.transitionHandler.bind(this)
     };
 
-    let swipe_key = `${this.state.archive}_${pages.length}`
+    let swipe_key = `${this.state.archive}_${pages.length}_${this.state.width}_${this.state.height}`
 
     return (
       <div className='reader' tabIndex='0' onClick={()=>this.handleClick()} onKeyDown={(event) => this.handleKeyPress(event)} >
