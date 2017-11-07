@@ -86,7 +86,6 @@ isIpad(){
 
 handleOrientationChange(e){
   //Force a page reload to get the correct aspect ratio
-  debugger;
   browserHistory.push(`${window.location.pathname}${window.location.hash}`);
 }
 
@@ -146,10 +145,11 @@ transitionHandler(){
     let style = {height : this.state.height, width: this.state.width};
     let class_names = this.isIpad() ? 'page ipad' : 'page';
 
+    let orientation = window.orientation || 'n/a';
 
     let pages = this.state.pages.map( (page,index) => {
-      return <div style={style} className={class_names} key={'parent-'+index} >
-                <img src={page}  key={index}/>
+      return <div style={style} className={class_names} key={'parent-'+index+'-'+orientation} >
+                <img className='page_image' src={page}  key={index}/>
             </div>
     })
 
@@ -163,7 +163,7 @@ transitionHandler(){
       transitionEnd: this.transitionHandler.bind(this)
     };
 
-    let swipe_key = `${this.state.archive}_${pages.length}`
+    let swipe_key = `${this.state.archive}_${pages.length}_${orientation}`
 
     return (
       <div className='reader' tabIndex='0' onClick={()=>this.handleClick()} onKeyDown={(event) => this.handleKeyPress(event)} >
