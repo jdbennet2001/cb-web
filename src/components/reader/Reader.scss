@@ -50,3 +50,8 @@
   max-height:100%;
 
 }
+
+.page.laptop img {
+    overflow-y: scroll;
+    max-height: inherit;
+}

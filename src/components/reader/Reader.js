@@ -47,6 +47,7 @@ componentWillUnmount() {
   window.removeEventListener("orientationchange", this.handleOrientationChange);
 }
 
+
 getPages(position = 0){
 
     let archive  = this.state.archive;
@@ -75,7 +76,8 @@ updateWindowDimensions() {
     state = Object.assign(state, {
       width,
       height,
-      pages
+      pages,
+      page: pos
     });
     this.setState(state);
 }
@@ -135,20 +137,36 @@ transitionHandler(){
   }
 
   let pages = this.getPages(pos);
-      state = Object.assign(state, {pages} );
+      state = Object.assign(state, {pages, pos} );
   this.setState(state);
+}
+
+screen(){
+  //Tablet landscape
+  if (window.orientation == 0 || window.orientation == 180 ){
+    return {w: window.screen.width, h: window.screen.height-75, orientation: 'portrait'};
+  //Tablet portrait
+  }else if ( window.orientation == 90 || window.orientation == -90 ){
+    return {w: window.screen.height, h: window.screen.width-75, orientation: 'landscape'};
+  }
+  //Laptop
+  else{
+    return {w: window.outerWidth+16, h: window.innerHeight, orientation: 'laptop'};
+  }
 }
 
   render () {
 
+    let screen = this.screen();
 
-    let style = {height : this.state.height, width: this.state.width};
-    let class_names = this.isIpad() ? 'page ipad' : 'page';
+    // alert(`${JSON.stringify(screen)}`)
+
+    let style = {height : screen.h, width: screen.w};
 
     let orientation = window.orientation || 'n/a';
 
     let pages = this.state.pages.map( (page,index) => {
-      return <div style={style} className={class_names} key={'parent-'+index+'-'+orientation} >
+      return <div style={style} className={'page ' + screen.orientation} key={'parent-'+index+'-'+orientation} >
                 <img className='page_image' src={page}  key={index}/>
             </div>
     })
@@ -160,7 +178,8 @@ transitionHandler(){
 
     let swipeOptions = {
       continuous: false,
-      transitionEnd: this.transitionHandler.bind(this)
+      transitionEnd: this.transitionHandler.bind(this),
+      startSlide: this.state.pos || 0
     };
 
     let swipe_key = `${this.state.archive}_${pages.length}_${orientation}`
