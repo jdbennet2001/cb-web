@@ -26,7 +26,7 @@ constructor(props) {
 
   this.state = {
     pages: [],
-    offset: 0,
+    pos: 0,
     home_icon: false,
     archive,
     length
@@ -48,10 +48,10 @@ componentWillUnmount() {
 }
 
 
-getPages(position = 0){
+getPages(position = 0, archive, length){
 
-    let archive  = this.state.archive;
-    let length = this.state.length;
+     archive  = archive || this.state.archive;
+     length = length || this.state.length;
 
     let pages = _.times(length, index =>{
       return `/blank-svg-page.svg`;
@@ -121,21 +121,6 @@ transitionHandler(){
   let state = this.state;
   let archive = state.archive;
 
-  //Code to move to next issue in directory
-  if ( pos === this.state.pages.length-1){
-    let issue = _.findIndex(this.props.files, file=>{
-      return file.location === archive;
-    })
-
-    let next = _.nth(this.props.files, ++issue);
-    if ( next ){
-      this.state.archive = next.location;
-      this.state.length = next.length;
-      pos = 0;
-    }
-
-  }
-
   let pages = this.getPages(pos);
       state = Object.assign(state, {pages, pos} );
   this.setState(state);
@@ -155,11 +140,35 @@ screen(){
   }
 }
 
+handleIssueEnd(archive, length, e){
+
+  e.preventDefault();
+
+  let state = this.state;
+  state = Object.assign( state, {
+    pages: this.getPages(0, archive, length),
+    pos: 0,
+    home_icon: false,
+    archive,
+    length
+  });
+
+  this.setState(state);
+}
+
+nextIssue(archive){
+  //Code to move to next issue in directory
+    let issue = _.findIndex(this.props.files, file=>{
+      return file.location === archive;
+    })
+
+    let next = _.nth(this.props.files, ++issue);
+    return next;
+}
+
   render () {
 
     let screen = this.screen();
-
-    // alert(`${JSON.stringify(screen)}`)
 
     let style = {height : screen.h, width: screen.w};
 
@@ -184,9 +193,17 @@ screen(){
 
     let swipe_key = `${this.state.archive}_${pages.length}_${orientation}`
 
+    let next_file = this.nextIssue(this.state.archive);
+    let next_issue = <div></div>
+    if ( next_file && (this.state.pos === pages.length -1) ){
+        next_issue = <div className='nextIssueThumbnail' onClick={(e) => this.handleIssueEnd(next_file.location, next_file.length, e)}>
+                        <img src={'/cover/' +encodeURIComponent(next_file.name)}></img>
+                    </div>
+    }
     return (
       <div className='reader' tabIndex='0' onClick={()=>this.handleClick()} onKeyDown={(event) => this.handleKeyPress(event)} >
        {reader_back}
+       {next_issue}
        <ReactSwipe key={swipe_key} ref={reactSwipe => this.reactSwipe = reactSwipe}  className="carousel" swipeOptions={swipeOptions}>
           {pages}
       </ReactSwipe>
