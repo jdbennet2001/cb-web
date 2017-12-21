@@ -3,7 +3,8 @@
     width: 100%;
     left: 0;
     top: 0;
-    overflow: hidden;
+    overflow-y: scroll;
+    overflow-x: hidden;
     position: fixed;
 }
 
@@ -14,46 +15,11 @@
     z-index: 25;
 }
 
-/* Remove ipad style for desktop development */
-.page.ipad {
-  overflow-y: scroll !important;
-}
-
-.ipad img{
-  max-height: 100%;
-}
-
-.page{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-    overflow-y: scroll;
-
-}
-
-.page img{
-    flex: 0 1 auto;
-    align-self: auto;
-}
-
-
-
-.reader img{
+.reader img {
   height: auto;
-  width: auto;
-  margin: auto;
-  display: block;
   max-width: 100%;
-  max-height:100%;
-
-}
-
-.page.laptop img {
-    overflow-y: scroll;
-    max-height: inherit;
+  display: block;
+  margin: auto
 }
 
 .nextIssueThumbnail {
