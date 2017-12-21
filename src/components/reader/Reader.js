@@ -186,8 +186,14 @@ previousIssue(archive){
 
   render () {
 
+    let state = this.state;
     let divStyle = this.state;
-    let page = this.state.page;
+    
+    let page_number = state.page_number;
+    let next_number = page_number + 1;
+
+    let page = `/page?archive=${encodeURIComponent(state.archive)}&number=${page_number}`;
+    let next_page = `/page?archive=${encodeURIComponent(state.archive)}&number=${next_number}`;
 
     this.canvas = <Swipeable
         className="reader"
@@ -199,7 +205,8 @@ previousIssue(archive){
         tabIndex="0"  
         ref = {e => this.pageRedraw(e)}
         key={this.state.page_number} >
-        <img src={page} style={divStyle} className="App-logo" alt="logo" />
+        <img src={page} style={divStyle} className="App-logo"  />
+        <img src={next_page} className="hidden" alt="pre-loaded-image" />
       </Swipeable>
     
     return this.canvas;
