@@ -7,6 +7,9 @@ const project       = require('../project.config')
 const compress      = require('compression')
 const jsonfile      = require('jsonfile');
 
+const url = require('url');  
+const querystring = require('querystring');
+
 const app = express()
 app.use(compress())
 
@@ -45,7 +48,7 @@ if (project.env === 'development') {
 
   app.get('/index', function(req, res){
     let path_to_library = path.join(__dirname, '../tests/archives')
-    index('/Volumes/MainExt/webbox/');
+    index('/Volumes/Public/webbox/');
   })
 
   /*
@@ -83,6 +86,10 @@ if (project.env === 'development') {
    @input the issue name (No path, example 'Spider-Man 01.cbr')
    */
   app.get("/page", function(req, res) {
+
+    debugger;
+    let parsedUrl = url.parse(req.url);  
+    let parsedQs = querystring.parse(parsedUrl.query);
 
       let archive = decodeURIComponent(req.query.archive);
       page(archive, req.query.number).then(data =>{

@@ -4,6 +4,8 @@ const readChunk   = require('read-chunk');
 const _           = require('lodash');
 const sharp       = require('sharp');
 
+
+
 const Zip      = require('./adapters/zip');
 const Rar      = require('./adapters/rar');
 const Tar      = require('./adapters/tar');
@@ -18,9 +20,21 @@ module.exports.pages = function(archive){
   return adapter.pages();
 }
 
+let page_buffer = {}
+
 module.exports.page = function(archive, index, image_size=2048){
   try{
+    debugger;
      let file = path.basename(archive);
+     let key = `${file}-${index}`;
+
+     if ( page_buffer.key === key ){
+      console.log( `Getting page ${index} for ${file} from cache.`);
+      return page_buffer.value;
+     }else{
+      console.log( `Buffer has: ${_.keys(page_buffer)} in memory.`);
+     }
+
      console.log( `Getting page ${index} for ${file}, at ${image_size}px`);
      let adapter = get_adapter(archive);
      let buffer = adapter.page(index);
@@ -28,6 +42,8 @@ module.exports.page = function(archive, index, image_size=2048){
                                       .max()
                                       .toFormat('jpeg')
                                       .toBuffer()
+     
+     page_buffer = {key:key, value: client_image};
      return client_image;
    }catch(err){
     console.error(`Error resizing image, ${err.message}`);

@@ -45,7 +45,10 @@ constructor(props) {
 }
 
 componentDidUpdate() {
-  // debugger;
+  
+  try{
+    // this.swipeableEl.scrollTop = 0;
+  }catch(err){}
   // this.updateWindowDimensions();
   // window.addEventListener('resize', this.updateWindowDimensions);
 
@@ -89,6 +92,12 @@ swiped(e, deltaX, deltaY, isFlick, velocity) {
 
 swipedUp(e, deltaY, isFlick) {
   console.log("You Swiped Up...", e, deltaY, isFlick);
+}
+
+onTap(e){
+  if ( e.clientX > 500 ){
+    this.updatePage('FORWARD');
+  }
 }
 
 handleKeyPress(e) {
@@ -147,6 +156,8 @@ updatePage(direction) {
   
   this.setState(state);
 
+  this.swipeableEl.scrollTop = 0;
+
 }
 
 pageRedraw(e){
@@ -202,11 +213,13 @@ previousIssue(archive){
         onSwiped={this.swiped.bind(this)}
         onKeyDown={event => this.handleKeyPress(event)} 
         onContextMenu={event => this.rightClick(event)}
+        onClick={event =>this.onTap(event)}
         tabIndex="0"  
-        ref = {e => this.pageRedraw(e)}
-        key={this.state.page_number} >
-        <img src={page} style={divStyle} className="App-logo"  />
-        <img src={next_page} className="hidden" alt="pre-loaded-image" />
+        innerRef={(el) => this.swipeableEl = el}
+        >
+        
+        <img src={page} key={page} style={divStyle} className="App-logo"  />
+        <img src={next_page} key={next_page} className="hidden" alt="pre-loaded-image" />
       </Swipeable>
     
     return this.canvas;
